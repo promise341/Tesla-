@@ -73,7 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setSecurityVerified(true);
     setRequiresSecurityCheck(false);
     // Refresh session info
-    verifyAdminSecurity();
+    verifyAdminAccess();
   };
 
   const handleSecurityFailed = () => {
