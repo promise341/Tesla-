@@ -33,6 +33,9 @@ model User {
   transactions    Transaction[]
   vipMemberships  VipMembership[]
   notifications   Notification[]
+  depositAddresses DepositAddress[]
+  referralsReceived Referral[] @relation("RefereeRelation")
+  referralsSent     Referral[] @relation("ReferrerRelation")
 }
 
 model Transaction {
@@ -176,4 +179,29 @@ model Notification {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model DepositAddress {
+  id        String   @id @default(uuid())
+  userId    String
+  currency  String   // "BTC", "ETH", "USDT"
+  address   String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Referral {
+  id          String    @id @default(uuid())
+  referrerId  String
+  refereeId   String
+  bonusAmount Float     @default(0.0)
+  status      String    @default("PENDING") // "PENDING", "CREDITED", "EXPIRED"
+  createdAt   DateTime  @default(now())
+  creditedAt  DateTime?
+  
+  referrer    User      @relation("ReferrerRelation", fields: [referrerId], references: [id], onDelete: Cascade)
+  referee     User      @relation("RefereeRelation", fields: [refereeId], references: [id], onDelete: Cascade)
+
+  @@unique([referrerId, refereeId])
 }
