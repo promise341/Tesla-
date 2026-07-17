@@ -11,8 +11,12 @@ export async function GET(request: NextRequest) {
   if (securityCheck) return securityCheck;
 
   const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const adminUser = await prisma.user.findUnique({
-    where: { email: session!.user!.email },
+    where: { email: session.user.email },
     select: { role: true },
   });
 
@@ -80,8 +84,12 @@ export async function PUT(request: NextRequest) {
   if (securityCheck) return securityCheck;
 
   const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const adminUser = await prisma.user.findUnique({
-    where: { email: session!.user!.email },
+    where: { email: session.user.email },
     select: { role: true },
   });
 
