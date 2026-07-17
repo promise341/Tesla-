@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { QRCodeSVG as QRCode } from "qrcode.react";
 import toast from "react-hot-toast";
@@ -63,7 +63,7 @@ const CRYPTO_WALLETS = {
   }
 };
 
-export default function DepositPage() {
+function DepositPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -758,4 +758,19 @@ export default function DepositPage() {
       </div>
     );
   }
+}
+
+export default function DepositPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto mb-4" />
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Loading deposit window...</p>
+        </div>
+      </div>
+    }>
+      <DepositPageContent />
+    </Suspense>
+  );
 }
