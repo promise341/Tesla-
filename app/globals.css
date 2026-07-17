@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-sans antialiased transition-colors duration-300;
+  }
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+/* Custom styles for layout waves */
+.fill-white {
+  fill: #FFFFFF;
+}
+
+.dark .fill-white {
+  fill: #0F0F0F;
+}
+
+.fill-primary-50 {
+  fill: #FDECEE;
+}
+
+.dark .fill-primary-50 {
+  fill: #0F0F0F;
+}
+
+/* Ticker Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Bouncing Logo Animation */
+@keyframes logo-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+
+.animate-logo-bounce {
+  animation: logo-bounce 2.5s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.animate-logo-bounce:hover {
+  animation: logo-bounce 0.6s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(227, 25, 55, 0.45));
+}
+
+
+/* ── Alert Toast Animations ─────────────────── */
+@keyframes alertIn {
+  0%   { opacity: 0; transform: scale(0.8) translateY(-12px); }
+  100% { opacity: 1; transform: scale(1)   translateY(0); }
+}
+@keyframes alertOut {
+  0%   { opacity: 1; transform: scale(1)   translateY(0); }
+  100% { opacity: 0; transform: scale(0.9) translateY(-8px); }
+}
+@keyframes shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
+}

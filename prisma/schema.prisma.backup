@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id              String          @id @default(uuid())
+  username        String          @unique
+  name            String
+  email           String          @unique
+  phone           String
+  country         String
+  passwordHash    String
+  balance         Float           @default(0.0)
+  totalProfit     Float           @default(0.0)
+  totalWithdraw   Float           @default(0.0)
+  avatar          String?
+  kycStatus       String          @default("UNVERIFIED")
+  kycDocFront     String?
+  kycDocBack      String?
+  kycSelfie       String?
+  kycSubmittedAt  DateTime?
+  role            String          @default("USER")
+  createdAt       DateTime        @default(now())
+  activePlans     ActivePlan[]
+  giveawayEntries GiveawayEntry[]
+  orders          Order[]
+  trades          Trade[]
+  transactions    Transaction[]
+  vipMemberships  VipMembership[]
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  amount    Float
+  method    String
+  address   String?
+  status    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ActivePlan {
+  id         String   @id @default(uuid())
+  userId     String
+  planName   String
+  capital    Float
+  rate       Float
+  status     String
+  createdAt  DateTime @default(now())
+  lastPayout DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Car {
+  id          String  @id @default(uuid())
+  name        String
+  rangeMiles  String
+  topSpeed    String
+  zeroToSixty String?
+  price       Float
+  imageUrl    String
+  isFeatured  Boolean @default(false)
+  orders      Order[]
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  carId     String
+  status    String
+  createdAt DateTime @default(now())
+  car       Car      @relation(fields: [carId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model VipMembership {
+  id        String    @id @default(uuid())
+  userId    String
+  cardName  String
+  price     Float
+  duration  String
+  status    String    @default("PENDING")
+  payStatus String    @default("PAYMENT_PENDING")
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Giveaway {
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  prize       String
+  prizeType   String          @default("CASH")
+  imageUrl    String          @default("")
+  status      String          @default("ACTIVE")
+  endsAt      DateTime
+  maxEntries  Int             @default(0)
+  createdAt   DateTime        @default(now())
+  entries     GiveawayEntry[]
+}
+
+model GiveawayEntry {
+  id         String   @id @default(uuid())
+  userId     String
+  giveawayId String
+  status     String   @default("ENTERED")
+  createdAt  DateTime @default(now())
+  giveaway   Giveaway @relation(fields: [giveawayId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, giveawayId])
+}
+
+model Trade {
+  id           String    @id @default(uuid())
+  userId       String
+  instrumentId String
+  pair         String
+  name         String
+  category     String
+  side         String
+  orderType    String    @default("MARKET")
+  leverage     Int       @default(1)
+  expiration   String    @default("GTC")
+  entryPrice   Float
+  amount       Float
+  units        Float
+  stopLoss     Float?
+  takeProfit   Float?
+  status       String    @default("OPEN")
+  closePrice   Float?
+  pnl          Float?
+  pnlPct       Float?
+  openedAt     DateTime  @default(now())
+  closedAt     DateTime?
+  user         User      @relation(fields: [userId], references: [id])
+}

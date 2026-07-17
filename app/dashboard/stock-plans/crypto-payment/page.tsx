@@ -1,0 +1,562 @@
+"use client";
+
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { QRCodeSVG as QRCode } from "qrcode.react";
+import {
+  Home,
+  ChevronRight,
+  Copy,
+  Upload,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  ArrowRight,
+} from "lucide-react";
+
+// Crypto wallet addresses from env
+const CRYPTO_WALLETS = {
+  BTC: {
+    address: process.env.NEXT_PUBLIC_BTC_WALLET || "",
+    name: "Bitcoin",
+    network: "Bitcoin Network",
+    icon: "₿",
+    color: "bg-orange-500",
+  },
+  ETH: {
+    address: process.env.NEXT_PUBLIC_ETH_WALLET || "",
+    name: "Ethereum",
+    network: "Ethereum Network",
+    icon: "Ξ",
+    color: "bg-blue-500",
+  },
+  BNB: {
+    address: process.env.NEXT_PUBLIC_BNB_WALLET || "",
+    name: "BNB",
+    network: "BSC Network (Binance Smart Chain)",
+    icon: "◆",
+    color: "bg-yellow-500",
+  },
+  SOLANA: {
+    address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "",
+    name: "Solana",
+    network: "Solana Network",
+    icon: "◎",
+    color: "bg-purple-500",
+  },
+  "USDT-ETH": {
+    address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "",
+    name: "USDT (Ethereum)",
+    network: "Ethereum Network",
+    icon: "₮",
+    color: "bg-green-500",
+  },
+  "USDT-TRX": {
+    address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "",
+    name: "USDT (Tron)",
+    network: "Tron Network",
+    icon: "₮",
+    color: "bg-red-500",
+  },
+};
+
+type CryptoKey = keyof typeof CRYPTO_WALLETS;
+
+function CryptoPaymentContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const planName = searchParams?.get("plan") || "";
+  const amount = parseFloat(searchParams?.get("amount") || "0");
+
+  const [step, setStep] = useState<"select" | "payment" | "proof" | "success">("select");
+  const [selectedCrypto, setSelectedCrypto] = useState<CryptoKey | "">("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const cryptoWallet = selectedCrypto ? CRYPTO_WALLETS[selectedCrypto] : null;
+
+  function copyWallet() {
+    if (cryptoWallet) {
+      navigator.clipboard.writeText(cryptoWallet.address).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
+  }
+
+  async function handleProofSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+
+    if (!proofFile) {
+      setError("Please select a proof image");
+      return;
+    }
+
+    if (!walletAddress || walletAddress.length < 25) {
+      setError("Please enter a valid wallet address for refunds");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Create the investment purchase with crypto payment
+      const formData = new FormData();
+      formData.append("planName", planName);
+      formData.append("amount", amount.toString());
+      formData.append("paymentMethod", selectedCrypto);
+      formData.append("proofImage", proofFile);
+      formData.append("userWalletAddress", walletAddress);
+
+      const res = await fetch("/api/plans/subscribe-crypto", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to submit payment proof");
+        setLoading(false);
+        return;
+      }
+
+      setStep("success");
+    } catch (err) {
+      setError("Network error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Step 1: Select Cryptocurrency
+  if (step === "select") {
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        <div className="text-center py-4">
+          <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">
+            Pay with Cryptocurrency
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {planName} - ${amount.toLocaleString()}
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-sm">
+          {error && (
+            <div className="mb-4 flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-700 dark:text-red-400 font-semibold">
+              <AlertCircle size={16} />
+              {error}
+            </div>
+          )}
+
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
+            Select Cryptocurrency
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {Object.entries(CRYPTO_WALLETS).map(([key, crypto]) => (
+              <button
+                key={key}
+                onClick={() => {
+                  setSelectedCrypto(key as CryptoKey);
+                  setError("");
+                }}
+                className={`p-6 rounded-xl border-2 transition-all text-left hover:border-primary-500 ${
+                  selectedCrypto === key
+                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                    : "border-gray-200 dark:border-gray-700 hover:border-primary-300"
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`w-12 h-12 rounded-full ${crypto.color} flex items-center justify-center text-white text-xl font-bold`}
+                  >
+                    {crypto.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 dark:text-white">
+                      {crypto.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {crypto.network}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => {
+              if (!selectedCrypto) {
+                setError("Please select a cryptocurrency");
+                return;
+              }
+              setStep("payment");
+            }}
+            disabled={!selectedCrypto}
+            className="w-full mt-6 flex items-center justify-center gap-2 py-3.5 bg-primary-500 hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold rounded-xl transition-colors"
+          >
+            Continue
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 2: Show Wallet Address & QR Code
+  if (step === "payment") {
+    return (
+      <div className="max-w-3xl mx-auto space-y-6">
+        <div className="text-center py-4">
+          <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">
+            Send ${amount.toLocaleString()} {cryptoWallet?.name}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {planName}
+          </p>
+          <button
+            onClick={() => setStep("select")}
+            className="text-sm text-primary-500 hover:text-primary-600 mt-2"
+          >
+            ← Change payment method
+          </button>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-sm">
+          <div className="text-center space-y-6">
+            {/* Crypto Icon */}
+            <div className="flex justify-center">
+              <div
+                className={`w-16 h-16 rounded-full ${cryptoWallet?.color} flex items-center justify-center text-white text-2xl font-bold`}
+              >
+                {cryptoWallet?.icon}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {cryptoWallet?.name} Payment
+              </h2>
+              <p className="text-gray-500 dark:text-gray-400">
+                Send exactly{" "}
+                <span className="font-bold text-primary-500">
+                  ${amount.toLocaleString()}
+                </span>{" "}
+                worth of {cryptoWallet?.name}
+              </p>
+            </div>
+
+            {/* QR Code */}
+            <div className="flex justify-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+              <QRCode
+                value={cryptoWallet?.address || ""}
+                size={200}
+                level="H"
+                includeMargin={true}
+                fgColor="#000000"
+                bgColor="#ffffff"
+              />
+            </div>
+
+            {/* Wallet Address */}
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                {cryptoWallet?.name} Wallet Address
+              </p>
+              <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 p-4 rounded-xl">
+                <code className="flex-1 text-gray-900 dark:text-green-400 text-sm font-mono break-all">
+                  {cryptoWallet?.address}
+                </code>
+                <button
+                  onClick={copyWallet}
+                  className="px-3 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex-shrink-0"
+                  title="Copy wallet address"
+                >
+                  <Copy size={16} />
+                </button>
+              </div>
+              {copied && (
+                <p className="text-sm text-green-500 mt-2">
+                  ✓ Address copied to clipboard!
+                </p>
+              )}
+            </div>
+
+            {/* Instructions */}
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+              <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+                <strong>Payment Instructions:</strong>
+              </p>
+              <ul className="text-xs text-blue-700 dark:text-blue-300 space-y-1 text-left">
+                <li>• Send exactly ${amount.toFixed(2)} worth of {cryptoWallet?.name}</li>
+                <li>• Use the {cryptoWallet?.network}</li>
+                <li>• Double-check the wallet address before sending</li>
+                <li>• Keep your transaction receipt/screenshot</li>
+              </ul>
+            </div>
+
+            {/* "I have paid" Button */}
+            <button
+              onClick={() => setStep("proof")}
+              className="w-full flex items-center justify-center gap-2 py-4 bg-green-500 hover:bg-green-600 text-white font-extrabold text-lg rounded-xl transition-colors shadow-md"
+            >
+              <CheckCircle2 size={20} />
+              I have paid - Upload Proof
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 3: Upload Proof
+  if (step === "proof") {
+    return (
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="text-center py-4">
+          <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">
+            Upload Payment Proof
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {planName} - ${amount.toLocaleString()} {cryptoWallet?.name}
+          </p>
+          <button
+            onClick={() => setStep("payment")}
+            className="text-sm text-primary-500 hover:text-primary-600 mt-2"
+          >
+            ← Back to payment details
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Payment Summary */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
+              <div
+                className={`w-8 h-8 rounded-full ${cryptoWallet?.color} flex items-center justify-center text-white text-sm font-bold`}
+              >
+                {cryptoWallet?.icon}
+              </div>
+              Payment Summary
+            </h2>
+
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-500 dark:text-gray-400">Plan:</span>
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {planName}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500 dark:text-gray-400">Cryptocurrency:</span>
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {cryptoWallet?.name}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500 dark:text-gray-400">Network:</span>
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {cryptoWallet?.network}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500 dark:text-gray-400">Amount:</span>
+                <span className="font-bold text-primary-500">
+                  ${amount.toLocaleString()}
+                </span>
+              </div>
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Sent to wallet:
+                </p>
+                <code className="text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded text-gray-900 dark:text-gray-300 block mt-1 break-all">
+                  {cryptoWallet?.address}
+                </code>
+              </div>
+            </div>
+          </div>
+
+          {/* Upload Form */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+              Upload Proof
+            </h2>
+
+            {error && (
+              <div className="mb-4 flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-700 dark:text-red-400 font-semibold">
+                <AlertCircle size={16} />
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleProofSubmit} className="space-y-4">
+              {/* Your Wallet Address */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                  Your {cryptoWallet?.name} Wallet (for refunds){" "}
+                  <span className="text-primary-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder={`Your ${cryptoWallet?.name} address`}
+                  value={walletAddress}
+                  onChange={(e) => setWalletAddress(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              {/* Proof Image Upload */}
+              <div>
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                  Payment Proof Screenshot{" "}
+                  <span className="text-primary-500">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setProofFile(e.target.files?.[0] || null)}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  />
+                  <div
+                    className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
+                      proofFile
+                        ? "border-green-400 bg-green-50 dark:bg-green-900/20"
+                        : "border-gray-300 dark:border-gray-600 hover:border-primary-400"
+                    }`}
+                  >
+                    <Upload
+                      size={32}
+                      className={`mx-auto mb-2 ${
+                        proofFile ? "text-green-500" : "text-gray-400"
+                      }`}
+                    />
+                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                      {proofFile ? `✓ ${proofFile.name}` : "Click or drag screenshot here"}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      PNG, JPG, or WebP (Max 5MB)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading || !proofFile || !walletAddress}
+                className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary-500 hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold rounded-xl transition-colors"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Upload size={16} />
+                    Submit Payment Proof
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 4: Success
+  if (step === "success") {
+    return (
+      <div className="max-w-md mx-auto mt-16 text-center px-4">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-10 shadow-sm">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+              <CheckCircle2 size={36} className="text-green-500" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">
+            Payment Proof Submitted!
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+            Your investment in{" "}
+            <span className="font-bold text-gray-900 dark:text-white">
+              {planName}
+            </span>{" "}
+            for{" "}
+            <span className="font-bold text-gray-900 dark:text-white">
+              ${amount.toLocaleString()}
+            </span>{" "}
+            is pending admin approval.
+          </p>
+          <p className="text-xs text-gray-400 mb-8">
+            Your plan will be activated within 2-4 hours after verification.
+          </p>
+
+          <div className="space-y-3">
+            <Link
+              href="/dashboard/investments"
+              className="block w-full py-3 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-bold text-sm transition-colors"
+            >
+              View My Portfolio
+            </Link>
+            <button
+              onClick={() => router.push("/dashboard/stock-plans")}
+              className="w-full py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              Browse More Plans
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
+export default function CryptoPaymentPage() {
+  return (
+    <div className="space-y-6">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-1.5 text-xs text-gray-400">
+        <Home size={11} />
+        <Link
+          href="/dashboard"
+          className="hover:text-primary-500 transition-colors"
+        >
+          Home
+        </Link>
+        <ChevronRight size={11} />
+        <Link
+          href="/dashboard/stock-plans"
+          className="hover:text-primary-500 transition-colors"
+        >
+          Stock Plans
+        </Link>
+        <ChevronRight size={11} />
+        <span className="text-gray-600 dark:text-gray-300 font-semibold">
+          Crypto Payment
+        </span>
+      </div>
+
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+            <Loader2 size={32} className="animate-spin text-primary-500" />
+          </div>
+        }
+      >
+        <CryptoPaymentContent />
+      </Suspense>
+    </div>
+  );
+}
