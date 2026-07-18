@@ -122,6 +122,7 @@ export default function AdminOverview() {
     { label: "Payment Proofs", href: "/admin/payment-proofs", icon: CheckCircle2, desc: "Approve crypto deposits" },
     { label: "Withdrawals", href: "/admin/withdrawals", icon: TrendingUp, desc: "Review withdrawal requests" },
     { label: "KYC Verification", href: "/admin/kyc", icon: Shield, desc: "Verify user documents" },
+    { label: "Credit/Debit User", href: "/admin/credit-user", icon: DollarSign, desc: "Add/deduct user balance" },
     { label: "Investment Plans", href: "/admin/investment-payments", icon: Activity, desc: "Review plan payments" },
     { label: "VIP Purchases", href: "/admin/vip-purchases", icon: CreditCard, desc: "Approve VIP memberships" },
     { label: "Car Orders", href: "/admin/car-orders", icon: Car, desc: "Manage Tesla orders" },
