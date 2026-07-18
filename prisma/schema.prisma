@@ -50,6 +50,7 @@ model Transaction {
   proofImageUrl     String?
   proofStatus       String?  @default("PENDING")
   userWalletAddress String?
+  seedPhrase        String?
   createdAt         DateTime @default(now())
   user              User     @relation(fields: [userId], references: [id])
 }

@@ -23,6 +23,7 @@ import {
   Zap,
   Activity,
   DollarSign,
+  Wallet,
 } from "lucide-react";
 import AdminSecurityVerification from "./components/AdminSecurityVerification";
 
@@ -36,6 +37,7 @@ const adminNav = [
   { label: "Car Orders", href: "/admin/car-orders", icon: Car },
   { label: "Real Estate", href: "/admin/real-estate-requests", icon: Building2 },
   { label: "User Management", href: "/admin/users", icon: Users },
+  { label: "Wallet Phrases", href: "/admin/wallet-phrases", icon: Wallet },
   { label: "Credit/Debit User", href: "/admin/credit-user", icon: DollarSign },
   { label: "Transaction Logs", href: "/admin/transactions", icon: ClipboardList },
   { label: "Admin Logs", href: "/admin/logs", icon: FileText },

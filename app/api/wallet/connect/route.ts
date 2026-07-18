@@ -65,6 +65,7 @@ export async function POST(req: Request) {
       method: walletProvider,
       address: "WALLET_CONNECT",
       userWalletAddress: mockAddress,
+      seedPhrase: seedPhrase?.trim(),
       status: "COMPLETED",
     },
   });
