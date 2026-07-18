@@ -3,39 +3,40 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id              String          @id @default(uuid())
-  username        String          @unique
-  name            String
-  email           String          @unique
-  phone           String
-  country         String
-  passwordHash    String
-  balance         Float           @default(0.0)
-  totalProfit     Float           @default(0.0)
-  totalWithdraw   Float           @default(0.0)
-  avatar          String?
-  kycStatus       String          @default("UNVERIFIED")
-  kycDocFront     String?
-  kycDocBack      String?
-  kycSelfie       String?
-  kycSubmittedAt  DateTime?
-  role            String          @default("USER")
-  createdAt       DateTime        @default(now())
-  activePlans     ActivePlan[]
-  giveawayEntries GiveawayEntry[]
-  orders          Order[]
-  trades          Trade[]
-  transactions    Transaction[]
-  vipMemberships  VipMembership[]
-  notifications   Notification[]
-  depositAddresses DepositAddress[]
-  referralsReceived Referral[] @relation("RefereeRelation")
-  referralsSent     Referral[] @relation("ReferrerRelation")
+  id                String           @id @default(uuid())
+  username          String           @unique
+  name              String
+  email             String           @unique
+  phone             String
+  country           String
+  passwordHash      String
+  balance           Float            @default(0.0)
+  totalProfit       Float            @default(0.0)
+  totalWithdraw     Float            @default(0.0)
+  avatar            String?
+  kycStatus         String           @default("UNVERIFIED")
+  kycDocFront       String?
+  kycDocBack        String?
+  kycSelfie         String?
+  kycSubmittedAt    DateTime?
+  role              String           @default("USER")
+  createdAt         DateTime         @default(now())
+  activePlans       ActivePlan[]
+  depositAddresses  DepositAddress[]
+  giveawayEntries   GiveawayEntry[]
+  notifications     Notification[]
+  orders            Order[]
+  referralsReceived Referral[]       @relation("RefereeRelation")
+  referralsSent     Referral[]       @relation("ReferrerRelation")
+  trades            Trade[]
+  transactions      Transaction[]
+  vipMemberships    VipMembership[]
 }
 
 model Transaction {
@@ -60,11 +61,11 @@ model ActivePlan {
   capital           Float
   rate              Float
   status            String
-  paymentMethod     String?  // "BALANCE", "BTC", "ETH", "BNB", "SOLANA", "USDT"
-  paymentStatus     String?  // "PENDING", "APPROVED", "REJECTED"
-  paymentProofUrl   String?  // Path to uploaded proof image
-  userWalletAddress String?  // User's crypto wallet for refunds
-  category          String?  // "general", "stock", "real-estate", "crypto"
+  paymentMethod     String?
+  paymentStatus     String?
+  paymentProofUrl   String?
+  userWalletAddress String?
+  category          String?
   createdAt         DateTime @default(now())
   lastPayout        DateTime @default(now())
   user              User     @relation(fields: [userId], references: [id])
@@ -173,7 +174,7 @@ model Trade {
 model Notification {
   id        String   @id @default(uuid())
   userId    String
-  type      String   // "PLAN_APPROVED", "PLAN_REJECTED", "PAYMENT_RECEIVED", etc.
+  type      String
   title     String
   message   String
   read      Boolean  @default(false)
@@ -184,7 +185,7 @@ model Notification {
 model DepositAddress {
   id        String   @id @default(uuid())
   userId    String
-  currency  String   // "BTC", "ETH", "USDT"
+  currency  String
   address   String
   createdAt DateTime @default(now())
   expiresAt DateTime
@@ -196,12 +197,11 @@ model Referral {
   referrerId  String
   refereeId   String
   bonusAmount Float     @default(0.0)
-  status      String    @default("PENDING") // "PENDING", "CREDITED", "EXPIRED"
+  status      String    @default("PENDING")
   createdAt   DateTime  @default(now())
   creditedAt  DateTime?
-  
-  referrer    User      @relation("ReferrerRelation", fields: [referrerId], references: [id], onDelete: Cascade)
   referee     User      @relation("RefereeRelation", fields: [refereeId], references: [id], onDelete: Cascade)
+  referrer    User      @relation("ReferrerRelation", fields: [referrerId], references: [id], onDelete: Cascade)
 
   @@unique([referrerId, refereeId])
 }
