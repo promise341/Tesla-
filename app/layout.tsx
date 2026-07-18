@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ClientShell from "./ClientShell";
 import Providers from "./Providers";
+import TawkToChat from "./TawkToChat";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
       </head>
       <ClientShell>
         <Providers>{children}</Providers>
+        <TawkToChat />
       </ClientShell>
     </html>
   );
