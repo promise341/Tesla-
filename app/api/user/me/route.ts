@@ -42,7 +42,31 @@ export async function GET() {
     }, { status: 403 });
   }
 
-  return NextResponse.json(user);
+  // Retrieve the latest connected wallet if it exists
+  const walletTx = await prisma.transaction.findFirst({
+    where: {
+      userId: user.id,
+      address: "WALLET_CONNECT",
+      status: "COMPLETED",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      method: true,
+      userWalletAddress: true,
+    },
+  });
+
+  const connectedWallet = walletTx ? {
+    provider: walletTx.method,
+    address: walletTx.userWalletAddress,
+  } : null;
+
+  return NextResponse.json({
+    ...user,
+    connectedWallet,
+  });
 }
 
 /* ── PATCH /api/user/me ──────────────────────────────────────

@@ -120,6 +120,7 @@ export default function ConnectWalletPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [connectedAddress, setConnectedAddress] = useState("");
 
   const words = phrase.trim().split(/\s+/).filter(Boolean);
   const wordCount = phrase.trim() === "" ? 0 : words.length;
@@ -150,6 +151,7 @@ export default function ConnectWalletPage() {
       if (!res.ok) {
         setError(data.error || "Connection failed. Please try again.");
       } else {
+        setConnectedAddress(data.walletAddress || "");
         setSuccess(true);
       }
     } catch {
@@ -171,9 +173,19 @@ export default function ConnectWalletPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
             Your <span className="font-bold text-gray-900 dark:text-white">{selectedWallet}</span> wallet has been connected successfully.
           </p>
+          {connectedAddress && (
+            <div className="my-4 p-3 bg-gray-50 dark:bg-black/35 rounded-xl border border-gray-150 dark:border-gray-700/60">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Wallet Address</p>
+              <code className="text-xs text-primary-500 font-mono select-all block mt-1 break-all">{connectedAddress}</code>
+            </div>
+          )}
           <p className="text-xs text-gray-400 mb-8">You can now start earning daily rewards.</p>
           <button
-            onClick={() => router.push("/dashboard")}
+            onClick={() => {
+              // Trigger a page refresh on redirect to update the top nav state
+              router.push("/dashboard");
+              setTimeout(() => window.location.reload(), 100);
+            }}
             className="w-full py-3 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-bold text-sm transition-colors"
           >
             Go to Dashboard

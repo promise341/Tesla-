@@ -32,8 +32,9 @@ export async function POST(req: Request) {
 
     if (!file) return NextResponse.json({ error: "No file provided." }, { status: 400 });
 
-    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-    if (!allowed.includes(file.type))
+    const mimeType = file.type.toLowerCase();
+    const allowed = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+    if (!allowed.includes(mimeType))
       return NextResponse.json({ error: "Invalid format. Use JPEG, PNG or WebP." }, { status: 400 });
 
     if (file.size > 5 * 1024 * 1024)
@@ -41,9 +42,9 @@ export async function POST(req: Request) {
 
     const bytes = await file.arrayBuffer();
     buffer = Buffer.from(bytes);
-    ext = file.type === "image/jpeg" ? "jpg"
-        : file.type === "image/png"  ? "png"
-        : file.type === "image/webp" ? "webp"
+    ext = (mimeType === "image/jpeg" || mimeType === "image/jpg") ? "jpg"
+        : mimeType === "image/png"  ? "png"
+        : mimeType === "image/webp" ? "webp"
         : "gif";
 
   } else {

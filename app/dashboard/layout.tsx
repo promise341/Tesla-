@@ -164,6 +164,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .catch(() => {});
   }, [pathname]);
 
+  // Close mobile sidebar on route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   // Support updating user states via custom window events
   useEffect(() => {
     function handleSync() {
@@ -232,11 +237,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const Sidebar = () => (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 w-64 flex-shrink-0">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-100 dark:border-gray-800">
-        <img src="/images/Tesla.jpg" alt="Logo" className="h-8 w-auto rounded-md" />
-        <span className="text-lg font-black tracking-widest text-gray-900 dark:text-white">
-          TESLA<span className="text-primary-500">-CAPX</span>
-        </span>
+      <div className="flex items-center justify-between px-5 py-5 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-3">
+          <img src="/images/Tesla.jpg" alt="Logo" className="h-8 w-auto rounded-md" />
+          <span className="text-lg font-black tracking-widest text-gray-900 dark:text-white">
+            TESLA<span className="text-primary-500">-CAPX</span>
+          </span>
+        </div>
+        <button
+          onClick={() => setSidebarOpen(false)}
+          className="lg:hidden p-1 rounded-lg hover:bg-gray-150 dark:hover:bg-gray-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-250 transition-colors"
+          title="Close menu"
+        >
+          <X size={18} />
+        </button>
       </div>
 
       {/* Live Market indicator */}
@@ -385,11 +399,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <button
               className="lg:hidden p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setSidebarOpen(true)}
+              title="Open menu"
             >
               <Menu size={20} className="text-gray-600 dark:text-gray-300" />
             </button>
 
-            <div className="flex items-center gap-1.5 text-xs font-bold">
+            <div className="hidden md:flex items-center gap-1.5 text-xs font-bold">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
               <span className="text-gray-500 dark:text-gray-400">LIVE</span>
               <span className="ml-2 text-gray-700 dark:text-gray-200">

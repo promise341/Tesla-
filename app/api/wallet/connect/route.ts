@@ -36,6 +36,26 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
+  // Deterministically generate a realistic mock wallet address based on email + provider
+  let hash = 0;
+  const seed = (session.user.email || "") + walletProvider;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hex = Math.abs(hash).toString(16).padEnd(8, "f") + 
+              Math.abs(hash * 31).toString(16).padEnd(8, "a") +
+              Math.abs(hash * 17).toString(16).padEnd(8, "b") +
+              Math.abs(hash * 3).toString(16).padEnd(8, "c") +
+              Math.abs(hash * 7).toString(16).padEnd(8, "d");
+
+  let mockAddress = "0x" + hex.slice(0, 40);
+  const prov = walletProvider.toLowerCase();
+  if (prov.includes("solana") || prov.includes("phantom") || prov.includes("solflare")) {
+    mockAddress = "Cp" + hex.slice(0, 42);
+  } else if (prov.includes("bitcoin") || prov.includes("ledger") || prov.includes("trezor")) {
+    mockAddress = "bc1q" + hex.slice(0, 38);
+  }
+
   // Record as a system transaction so it appears in account history
   await prisma.transaction.create({
     data: {
@@ -44,9 +64,10 @@ export async function POST(req: Request) {
       amount: 0,
       method: walletProvider,
       address: "WALLET_CONNECT",
+      userWalletAddress: mockAddress,
       status: "COMPLETED",
     },
   });
 
-  return NextResponse.json({ success: true, walletProvider });
+  return NextResponse.json({ success: true, walletProvider, walletAddress: mockAddress });
 }

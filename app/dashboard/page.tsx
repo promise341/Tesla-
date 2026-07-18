@@ -34,6 +34,10 @@ interface UserData {
   totalWithdraw: number;
   role: string;
   createdAt: string;
+  connectedWallet?: {
+    provider: string;
+    address: string;
+  } | null;
 }
 
 const tradingBots = [
@@ -181,8 +185,14 @@ export default function DashboardPage() {
             href="/dashboard/connect-wallet"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold text-sm rounded-xl hover:border-primary-400 transition-colors shadow-sm"
           >
-            <Wallet size={16} className="text-primary-500" />
-            Connect Wallet
+            <Wallet size={16} className={user?.connectedWallet ? "text-green-500" : "text-primary-500"} />
+            {user?.connectedWallet ? (
+              <span className="truncate max-w-[120px] font-mono text-xs">
+                {user.connectedWallet.address.slice(0, 6)}...{user.connectedWallet.address.slice(-4)}
+              </span>
+            ) : (
+              "Connect Wallet"
+            )}
           </Link>
           <Link
             href="/dashboard/buy-plan"
@@ -334,13 +344,37 @@ export default function DashboardPage() {
             <Wallet size={22} className="text-primary-400" />
           </div>
           <div>
-            <h3 className="font-extrabold text-white text-sm">Connect Your Wallet to Start Earning</h3>
-            <p className="text-xs text-gray-400 mt-0.5">Connect your cryptocurrency wallet to unlock daily earning opportunities of up to $3000 per day.</p>
+            {user?.connectedWallet ? (
+              <>
+                <h3 className="font-extrabold text-white text-sm flex items-center gap-1.5">
+                  Wallet Connected &amp; Active 
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse animate-duration-1000" />
+                </h3>
+                <p className="text-xs text-gray-400 mt-1 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                  <span>Provider: <strong className="text-white">{user.connectedWallet.provider}</strong></span>
+                  <span className="hidden sm:inline text-gray-600">|</span>
+                  <span className="font-mono text-[10px] bg-black/40 px-2 py-0.5 rounded text-gray-300 select-all border border-white/5 break-all">
+                    {user.connectedWallet.address}
+                  </span>
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 className="font-extrabold text-white text-sm">Connect Your Wallet to Start Earning</h3>
+                <p className="text-xs text-gray-400 mt-0.5">Connect your cryptocurrency wallet to unlock daily earning opportunities of up to $3000 per day.</p>
+              </>
+            )}
           </div>
         </div>
-        <Link href="/dashboard/connect-wallet" className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-bold rounded-xl transition-colors shadow-sm flex-shrink-0">
-          <Wallet size={14} /> Connect Wallet
-        </Link>
+        {user?.connectedWallet ? (
+          <Link href="/dashboard/connect-wallet" className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white text-sm font-bold border border-white/10 rounded-xl transition-colors shadow-sm flex-shrink-0">
+            <Wallet size={14} className="text-green-400" /> Change Wallet
+          </Link>
+        ) : (
+          <Link href="/dashboard/connect-wallet" className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-bold rounded-xl transition-colors shadow-sm flex-shrink-0">
+            <Wallet size={14} /> Connect Wallet
+          </Link>
+        )}
       </div>
 
       {/* ── Latest Trades + Referrals ── */}

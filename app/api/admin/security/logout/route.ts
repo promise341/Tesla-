@@ -31,7 +31,7 @@ export async function POST() {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 0, // Immediately expire
-      path: '/admin'
+      path: '/'    // Must match the path the cookie was set with
     });
 
     return response;

@@ -1,7 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Shield, Calculator, Lock, AlertTriangle, CheckCircle, Eye, EyeOff } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Shield,
+  Calculator,
+  Lock,
+  AlertTriangle,
+  CheckCircle,
+  Eye,
+  EyeOff,
+  Zap,
+  Activity,
+} from "lucide-react";
 
 interface MathChallenge {
   question: string;
@@ -13,80 +23,91 @@ interface AdminSecurityProps {
   onFailed: () => void;
 }
 
-export default function AdminSecurityVerification({ onVerified, onFailed }: AdminSecurityProps) {
-  const [step, setStep] = useState<'password' | 'math' | 'verified'>('password');
+function generateMathChallenge(): MathChallenge {
+  const operations = ["+", "-", "*"];
+  const operation = operations[Math.floor(Math.random() * operations.length)];
+  let num1: number, num2: number, answer: number, question: string;
+  switch (operation) {
+    case "+":
+      num1 = Math.floor(Math.random() * 50) + 10;
+      num2 = Math.floor(Math.random() * 50) + 10;
+      answer = num1 + num2;
+      question = `${num1} + ${num2}`;
+      break;
+    case "-":
+      num1 = Math.floor(Math.random() * 50) + 50;
+      num2 = Math.floor(Math.random() * 30) + 10;
+      answer = num1 - num2;
+      question = `${num1} − ${num2}`;
+      break;
+    case "*":
+      num1 = Math.floor(Math.random() * 12) + 2;
+      num2 = Math.floor(Math.random() * 12) + 2;
+      answer = num1 * num2;
+      question = `${num1} × ${num2}`;
+      break;
+    default:
+      return { question: "5 + 3", answer: 8 };
+  }
+  return { question, answer };
+}
+
+export default function AdminSecurityVerification({
+  onVerified,
+  onFailed,
+}: AdminSecurityProps) {
+  const [step, setStep] = useState<"password" | "math" | "verified">("password");
   const [adminPassword, setAdminPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [mathChallenge, setMathChallenge] = useState<MathChallenge | null>(null);
   const [mathAnswer, setMathAnswer] = useState("");
   const [attempts, setAttempts] = useState(0);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes timeout
+  const [timeLeft, setTimeLeft] = useState(300);
+  const solvedRef = React.useRef(false); // prevents timer firing after success
+  const [particles] = useState(() =>
+    Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 3}s`,
+      duration: `${2 + Math.random() * 3}s`,
+      size: Math.random() > 0.5 ? "w-0.5 h-0.5" : "w-1 h-1",
+    }))
+  );
 
-  // Generate random math challenge
-  const generateMathChallenge = (): MathChallenge => {
-    const operations = ['+', '-', '*'];
-    const operation = operations[Math.floor(Math.random() * operations.length)];
-    
-    let num1: number, num2: number, answer: number, question: string;
-    
-    switch (operation) {
-      case '+':
-        num1 = Math.floor(Math.random() * 50) + 10;
-        num2 = Math.floor(Math.random() * 50) + 10;
-        answer = num1 + num2;
-        question = `${num1} + ${num2}`;
-        break;
-      case '-':
-        num1 = Math.floor(Math.random() * 50) + 50;
-        num2 = Math.floor(Math.random() * 30) + 10;
-        answer = num1 - num2;
-        question = `${num1} - ${num2}`;
-        break;
-      case '*':
-        num1 = Math.floor(Math.random() * 12) + 2;
-        num2 = Math.floor(Math.random() * 12) + 2;
-        answer = num1 * num2;
-        question = `${num1} × ${num2}`;
-        break;
-      default:
-        num1 = 5;
-        num2 = 3;
-        answer = 8;
-        question = "5 + 3";
-    }
-    
-    return { question, answer };
-  };
+  const handleFailed = useCallback(() => onFailed(), [onFailed]);
 
-  // Countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          onFailed();
+          if (!solvedRef.current) handleFailed();
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(timer);
-  }, [onFailed]);
+  }, [handleFailed]);
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  const formatTime = (s: number) =>
+    `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
+
+  const timerColor =
+    timeLeft > 180
+      ? "text-green-400"
+      : timeLeft > 60
+      ? "text-yellow-400"
+      : "text-red-400";
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    console.log('[ADMIN SECURITY] Password submit attempt:', adminPassword);
+    setSuccessMsg("");
 
     if (!adminPassword.trim()) {
       setError("Password is required");
@@ -95,43 +116,36 @@ export default function AdminSecurityVerification({ onVerified, onFailed }: Admi
     }
 
     try {
-      console.log('[ADMIN SECURITY] Calling password verification API...');
-      const response = await fetch('/api/admin/security/verify-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/admin/security/verify-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: adminPassword }),
       });
-
-      console.log('[ADMIN SECURITY] API Response status:', response.status);
       const data = await response.json();
-      console.log('[ADMIN SECURITY] API Response data:', data);
 
       if (response.ok && data.success) {
-        console.log('[ADMIN SECURITY] Password verified, generating math challenge...');
-        // Password correct, proceed to math challenge
         const challenge = generateMathChallenge();
-        console.log('[ADMIN SECURITY] Math challenge generated:', challenge);
         setMathChallenge(challenge);
-        setStep('math');
-        setAdminPassword(""); // Clear password for security
-        setError("✅ Password verified! Solve the math problem to proceed.");
+        setAdminPassword("");
+        setSuccessMsg("Password verified — solve the challenge below");
+        setTimeout(() => {
+          setSuccessMsg("");
+          setStep("math");
+        }, 900);
       } else {
-        console.log('[ADMIN SECURITY] Password verification failed:', data);
-        setAttempts(prev => prev + 1);
-        if (attempts >= 2) {
-          console.log('[ADMIN SECURITY] Too many attempts, calling onFailed');
-          onFailed();
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        if (newAttempts >= 3) {
+          handleFailed();
         } else {
-          setError(data.message || "Invalid password. Try again.");
+          setError(data.message || data.error || "Invalid password.");
         }
       }
-    } catch (error) {
-      console.error('[ADMIN SECURITY] Password verification error:', error);
-      setError("Security verification failed. Please try again.");
-      setAttempts(prev => prev + 1);
-      if (attempts >= 2) {
-        onFailed();
-      }
+    } catch {
+      setError("Security check failed. Try again.");
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+      if (newAttempts >= 3) handleFailed();
     } finally {
       setLoading(false);
     }
@@ -143,21 +157,20 @@ export default function AdminSecurityVerification({ onVerified, onFailed }: Admi
     setError("");
 
     if (!mathAnswer.trim()) {
-      setError("Please solve the math problem");
+      setError("Enter your answer");
       setLoading(false);
       return;
     }
 
     const userAnswer = parseInt(mathAnswer);
     if (isNaN(userAnswer) || userAnswer !== mathChallenge?.answer) {
-      setAttempts(prev => prev + 1);
-      if (attempts >= 2) {
-        onFailed();
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+      if (newAttempts >= 3) {
+        handleFailed();
       } else {
-        setError("Incorrect answer. Try again.");
-        // Generate new challenge on wrong answer
-        const newChallenge = generateMathChallenge();
-        setMathChallenge(newChallenge);
+        setError("Incorrect answer. New challenge generated.");
+        setMathChallenge(generateMathChallenge());
         setMathAnswer("");
       }
       setLoading(false);
@@ -165,192 +178,289 @@ export default function AdminSecurityVerification({ onVerified, onFailed }: Admi
     }
 
     try {
-      // Create secure admin session
-      const response = await fetch('/api/admin/security/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          challengeSolved: true,
-          timestamp: Date.now() 
-        }),
+      const response = await fetch("/api/admin/security/create-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ challengeSolved: true, timestamp: Date.now() }),
       });
 
       if (response.ok) {
-        setStep('verified');
-        setTimeout(() => {
-          onVerified();
-        }, 1000);
+        solvedRef.current = true; // stop countdown timer from firing onFailed
+        setStep("verified");
+        setTimeout(() => onVerified(), 1400);
       } else {
-        setError("Failed to create secure session");
+        setError("Failed to create secure session.");
       }
-    } catch (error) {
-      console.error('Session creation error:', error);
-      setError("Security session creation failed");
+    } catch {
+      setError("Session creation failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8">
-        <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-lg p-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="mx-auto h-16 w-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mb-4">
-              <Shield className="h-8 w-8 text-red-600 dark:text-red-400" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Admin Security Verification
-            </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Ultra-strong security required for admin access
-            </p>
-            
-            {/* Countdown Timer */}
-            <div className="mt-4 p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
-              <p className="text-sm text-red-600 dark:text-red-400 font-mono">
-                Time remaining: {formatTime(timeLeft)}
-              </p>
-            </div>
-            
-            {/* Attempts Counter */}
-            <div className="mt-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Attempts: {attempts}/3
-              </p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#080808] flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Ambient Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Red glow blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-900/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-red-800/10 rounded-full blur-3xl" />
+        {/* Grid */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(220,38,38,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.5) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+        {/* Particles */}
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className={`absolute ${p.size} bg-red-500/30 rounded-full animate-pulse`}
+            style={{ left: p.left, top: p.top, animationDelay: p.delay, animationDuration: p.duration }}
+          />
+        ))}
+      </div>
 
-          {/* Error Display */}
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-              <div className="flex items-center">
-                <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      <div className="relative w-full max-w-md">
+        {/* Card */}
+        <div
+          className="bg-[#111111] rounded-2xl border border-red-900/40 overflow-hidden"
+          style={{ boxShadow: "0 0 60px rgba(220,38,38,0.15), 0 25px 50px rgba(0,0,0,0.8)" }}
+        >
+          {/* Header Bar */}
+          <div className="h-1 bg-gradient-to-r from-red-900 via-red-600 to-red-900" />
+
+          <div className="p-8">
+            {/* Icon + Title */}
+            <div className="text-center mb-8">
+              <div className="relative inline-flex items-center justify-center mb-5">
+                <div className="absolute w-20 h-20 bg-red-600/10 rounded-full animate-ping" style={{ animationDuration: "2s" }} />
+                <div className="relative w-16 h-16 bg-gradient-to-br from-red-700 to-red-950 rounded-2xl flex items-center justify-center border border-red-700/50 shadow-xl shadow-red-900/60">
+                  {step === "math" ? (
+                    <Calculator className="w-7 h-7 text-red-300" />
+                  ) : step === "verified" ? (
+                    <CheckCircle className="w-7 h-7 text-green-400" />
+                  ) : (
+                    <Shield className="w-7 h-7 text-red-300" />
+                  )}
+                </div>
+              </div>
+
+              <h2 className="text-xl font-bold text-white tracking-tight">
+                {step === "password" && "Admin Security Verification"}
+                {step === "math" && "Mathematical Challenge"}
+                {step === "verified" && "Access Granted"}
+              </h2>
+              <p className="mt-1.5 text-sm text-gray-500">
+                {step === "password" && "Enter your master password to continue"}
+                {step === "math" && "Solve the equation below to unlock access"}
+                {step === "verified" && "Redirecting to admin dashboard..."}
+              </p>
+
+              {/* Timer + Attempts */}
+              <div className="mt-5 flex items-center justify-center gap-4">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 border border-white/10">
+                  <Activity size={11} className={timerColor} />
+                  <span className={`text-xs font-mono font-semibold ${timerColor}`}>
+                    {formatTime(timeLeft)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 border border-white/10">
+                  <span className="text-xs text-gray-400">
+                    Attempts:&nbsp;
+                    <span className={attempts >= 2 ? "text-red-400 font-bold" : "text-gray-200"}>
+                      {attempts}/3
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Step 1: Password Verification */}
-          {step === 'password' && (
-            <form onSubmit={handlePasswordSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  <Lock className="inline h-4 w-4 mr-2" />
-                  Admin Master Password
-                </label>
-                <div className="relative">
+            {/* Error / Success Messages */}
+            {error && (
+              <div className="mb-5 px-4 py-3 rounded-xl bg-red-950/60 border border-red-800/50 flex items-center gap-2.5">
+                <AlertTriangle size={15} className="text-red-400 flex-shrink-0" />
+                <p className="text-sm text-red-300">{error}</p>
+              </div>
+            )}
+            {successMsg && (
+              <div className="mb-5 px-4 py-3 rounded-xl bg-green-950/60 border border-green-800/50 flex items-center gap-2.5">
+                <CheckCircle size={15} className="text-green-400 flex-shrink-0" />
+                <p className="text-sm text-green-300">{successMsg}</p>
+              </div>
+            )}
+
+            {/* ── Step 1: Password ───────────────────────── */}
+            {step === "password" && (
+              <form onSubmit={handlePasswordSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">
+                    <Lock className="inline w-3.5 h-3.5 mr-1.5 text-red-500" />
+                    Master Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                      className="w-full px-4 py-3 pr-12 bg-black/60 border border-red-900/40
+                        text-white text-sm rounded-xl placeholder-gray-600
+                        focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600/40
+                        transition-all duration-200 disabled:opacity-50"
+                      placeholder="Enter admin master password"
+                      required
+                      disabled={loading}
+                      autoComplete="off"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-gray-300 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || !adminPassword.trim()}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-5
+                    bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800
+                    text-white text-sm font-bold rounded-xl transition-all duration-200
+                    shadow-lg shadow-red-900/50 hover:shadow-red-700/50
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    border border-red-700/40"
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      <Shield size={16} />
+                      Verify Password
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* ── Step 2: Math Challenge ─────────────────── */}
+            {step === "math" && mathChallenge && (
+              <form onSubmit={handleMathSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">
+                    <Calculator className="inline w-3.5 h-3.5 mr-1.5 text-red-500" />
+                    Solve to Proceed
+                  </label>
+
+                  {/* Math Display */}
+                  <div className="relative mb-4">
+                    <div className="p-6 rounded-xl bg-black/80 border border-red-900/40 text-center"
+                      style={{ boxShadow: "inset 0 0 30px rgba(220,38,38,0.06)" }}
+                    >
+                      <p className="text-4xl font-bold font-mono text-white tracking-wide">
+                        {mathChallenge.question}
+                        <span className="text-red-500 ml-3">=</span>
+                        <span className="text-red-400 ml-2">?</span>
+                      </p>
+                    </div>
+                    {/* Glow */}
+                    <div className="absolute inset-0 rounded-xl bg-red-600/5 pointer-events-none" />
+                  </div>
+
                   <input
-                    type={showPassword ? "text" : "password"}
-                    value={adminPassword}
-                    onChange={(e) => setAdminPassword(e.target.value)}
-                    className="block w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    placeholder="Enter admin password"
+                    type="number"
+                    value={mathAnswer}
+                    onChange={(e) => setMathAnswer(e.target.value)}
+                    className="w-full px-4 py-3 bg-black/60 border border-red-900/40
+                      text-white text-lg font-mono text-center rounded-xl placeholder-gray-600
+                      focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600/40
+                      transition-all duration-200 disabled:opacity-50
+                      [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+                    placeholder="Your answer"
                     required
                     disabled={loading}
                     autoComplete="off"
+                    autoFocus
                   />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
-                  </button>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || !mathAnswer.trim()}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-5
+                    bg-gradient-to-r from-green-700 to-green-900 hover:from-green-600 hover:to-green-800
+                    text-white text-sm font-bold rounded-xl transition-all duration-200
+                    shadow-lg shadow-green-900/50 hover:shadow-green-700/50
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    border border-green-700/40"
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      <Zap size={16} />
+                      Submit Answer
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* ── Step 3: Verified ───────────────────────── */}
+            {step === "verified" && (
+              <div className="text-center space-y-4 py-4">
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 bg-green-950/60 border border-green-700/40 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-green-400" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-base font-semibold text-green-400">Verification Complete!</p>
+                  <p className="text-sm text-gray-500 mt-1">Entering admin dashboard...</p>
+                </div>
+                <div className="flex justify-center">
+                  <div className="w-6 h-6 border-2 border-green-600/40 border-t-green-500 rounded-full animate-spin" />
                 </div>
               </div>
+            )}
 
-              <button
-                type="submit"
-                disabled={loading || !adminPassword.trim()}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-              >
-                {loading ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                ) : (
-                  <Shield className="h-4 w-4 mr-2" />
-                )}
-                {loading ? 'Verifying...' : 'Verify Password'}
-              </button>
-            </form>
-          )}
-
-          {/* Step 2: Math Challenge */}
-          {step === 'math' && mathChallenge && (
-            <form onSubmit={handleMathSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  <Calculator className="inline h-4 w-4 mr-2" />
-                  Solve this math problem to proceed
-                </label>
-                <div className="text-center p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-4">
-                  <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 font-mono">
-                    {mathChallenge.question} = ?
-                  </p>
+            {/* Security Notice */}
+            {step !== "verified" && (
+              <div className="mt-6 px-4 py-3 rounded-xl bg-black/40 border border-red-900/30 flex items-start gap-2.5">
+                <AlertTriangle size={13} className="text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="text-[11px] text-gray-600 space-y-0.5 leading-relaxed">
+                  <p className="font-semibold text-gray-500">Security Notice</p>
+                  <p>Max 3 attempts · 5-min session · All actions are logged</p>
                 </div>
-                <input
-                  type="number"
-                  value={mathAnswer}
-                  onChange={(e) => setMathAnswer(e.target.value)}
-                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-center text-lg"
-                  placeholder="Enter your answer"
-                  required
-                  disabled={loading}
-                  autoComplete="off"
-                />
               </div>
-
-              <button
-                type="submit"
-                disabled={loading || !mathAnswer.trim()}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-              >
-                {loading ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                ) : (
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                )}
-                {loading ? 'Verifying...' : 'Submit Answer'}
-              </button>
-            </form>
-          )}
-
-          {/* Step 3: Verified */}
-          {step === 'verified' && (
-            <div className="text-center space-y-4">
-              <div className="mx-auto h-16 w-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="text-lg font-medium text-green-600 dark:text-green-400">
-                Security Verification Complete!
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Redirecting to admin dashboard...
-              </p>
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600 mx-auto"></div>
-            </div>
-          )}
-
-          {/* Security Notice */}
-          <div className="mt-8 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
-            <div className="flex items-start">
-              <AlertTriangle className="h-4 w-4 text-yellow-500 mr-2 mt-0.5" />
-              <div className="text-xs text-yellow-700 dark:text-yellow-400">
-                <p className="font-medium mb-1">Security Notice:</p>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Maximum 3 attempts allowed</li>
-                  <li>5-minute session timeout</li>
-                  <li>All attempts are logged</li>
-                  <li>Failed attempts trigger security alerts</li>
-                </ul>
-              </div>
-            </div>
+            )}
           </div>
+        </div>
+
+        {/* Step indicators */}
+        <div className="flex items-center justify-center gap-2 mt-5">
+          {(["password", "math", "verified"] as const).map((s, i) => (
+            <div
+              key={s}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                step === s
+                  ? "w-8 bg-red-500"
+                  : (["password", "math", "verified"].indexOf(step) > i)
+                  ? "w-4 bg-green-700"
+                  : "w-4 bg-gray-800"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </div>

@@ -251,7 +251,7 @@ export default function SupportPage() {
 
       {/* Floating Live Chat Widget Popup */}
       {chatOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-full max-w-sm bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-350" style={{ height: 420 }}>
+        <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 w-auto sm:w-full sm:max-w-sm bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-bottom duration-350" style={{ height: 420 }}>
           
           {/* Chat Header */}
           <div className="px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-800 text-white flex items-center justify-between shadow-md">
