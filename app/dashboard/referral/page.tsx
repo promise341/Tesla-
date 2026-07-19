@@ -30,7 +30,7 @@ export default function ReferralPage() {
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://teslacapx.com";
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://teslaxipo.com";
   const referralLink = username ? `${origin}/register?ref=${username}` : "";
 
   function copyLink() {

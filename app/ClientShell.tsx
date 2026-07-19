@@ -11,8 +11,8 @@ export default function ClientShell({ children }: { children: React.ReactNode })
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const isDashboard = pathname ? pathname.startsWith("/dashboard") : false;
-  const isAdmin = pathname ? pathname.startsWith("/admin") : false;
+  const isDashboard = pathname ? pathname.toLowerCase().startsWith("/dashboard") : false;
+  const isAdmin = pathname ? pathname.toLowerCase().startsWith("/admin") : false;
   const [loggedIn, setLoggedIn] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [userName, setUserName] = useState("User");

@@ -235,7 +235,7 @@ export default function SupportPage() {
           <div className="grid grid-cols-1 gap-4">
             {[
               { label:"Live Chat Support",  icon:<MessageCircle size={22} className="text-green-500"/>,  bg:"bg-green-50 dark:bg-green-900/20",  sub:"Average reply: 1 minute", action: () => setChatOpen(true) },
-              { label:"Email Us",   icon:<Mail size={22} className="text-blue-500"/>,            bg:"bg-blue-50 dark:bg-blue-900/20",    sub:"support@teslacapx.com", action: () => window.location.href="mailto:support@teslacapx.com" },
+              { label:"Email Us",   icon:<Mail size={22} className="text-blue-500"/>,            bg:"bg-blue-50 dark:bg-blue-900/20",    sub:"support@teslaxipo.com", action: () => window.location.href="mailto:support@teslaxipo.com" },
               { label:"Call Us",    icon:<Phone size={22} className="text-purple-500"/>,         bg:"bg-purple-50 dark:bg-purple-900/20",sub:"+1 (800) 000-0000", action: () => toast.success("Phone assistance is currently busy. Try Live Chat.") },
             ].map(c => (
               <div key={c.label} onClick={c.action} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 flex flex-col items-center text-center gap-2 cursor-pointer hover:shadow-md transition-shadow">

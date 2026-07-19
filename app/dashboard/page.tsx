@@ -147,7 +147,7 @@ export default function DashboardPage() {
   const totalProfit = user?.totalProfit ?? 0;
   const totalWithdraw = user?.totalWithdraw ?? 0;
   const isVerified = false;
-  const referralLink = `http://teslacapx.com/ref/${username}`;
+  const referralLink = typeof window !== "undefined" ? `${window.location.origin}/register?ref=${username}` : `https://teslaxipo.com/register?ref=${username}`;
 
   const fmt = (n: number) =>
     "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2 });

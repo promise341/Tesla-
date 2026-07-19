@@ -33,7 +33,7 @@ const PAYMENT_METHODS = [
 
 type Step = "verify" | "form" | "success";
 
-const STATIC_WITHDRAWAL_CODE = "WD-2025-CAPX";
+const STATIC_WITHDRAWAL_CODE = "WD-2025-XIPO";
 
 export default function WithdrawPage() {
   const router = useRouter();
@@ -240,8 +240,8 @@ export default function WithdrawPage() {
           </div>
           <p className="text-xs text-yellow-200/80 leading-relaxed">
             For your security, this withdrawal requires a verification code. Request a code using the simulator button below or contact support at{" "}
-            <a href="mailto:support@teslacapx.com" className="underline text-yellow-300 hover:text-yellow-200">
-              support@teslacapx.com
+            <a href="mailto:support@teslaxipo.com" className="underline text-yellow-300 hover:text-yellow-200">
+              support@teslaxipo.com
             </a>.
           </p>
           <button
@@ -271,7 +271,7 @@ export default function WithdrawPage() {
                   type="text"
                   value={verifyCode}
                   onChange={(e) => { setVerifyCode(e.target.value); setVerifyError(""); }}
-                  placeholder="Enter verification code (e.g. WD-2025-CAPX)"
+                  placeholder="Enter verification code (e.g. WD-2025-XIPO)"
                   className="w-full px-4 py-3.5 rounded-xl bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 />
                 {verifyError && (

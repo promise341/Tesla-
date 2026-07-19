@@ -205,7 +205,7 @@ export default function MyMembershipsPage() {
         </head>
         <body>
           <div class="header">
-            <div class="title">TESLA CAPX VIP CARD INVOICE</div>
+            <div class="title">TESLAXIPO VIP CARD INVOICE</div>
             <p>Date Generated: ${new Date().toLocaleDateString()}</p>
           </div>
           <div class="invoice-details">
@@ -240,7 +240,7 @@ export default function MyMembershipsPage() {
             Total Charged Amount: $${m.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </div>
           <div class="footer">
-            Thank you for unlocking VIP status. If you have any inquiries, contact vip@teslacapx.com.
+            Thank you for unlocking VIP status. If you have any inquiries, contact vip@teslaxipo.com.
           </div>
           <script>window.print();</script>
         </body>

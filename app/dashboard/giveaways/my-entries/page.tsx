@@ -100,7 +100,7 @@ function TicketModal({ entry, onClose, userName }: TicketModalProps) {
         <body>
           <div class="ticket">
             <div class="header">
-              <div style="font-weight: 900; letter-spacing: 1px;">TESLA CAPX VOUCHER</div>
+              <div style="font-weight: 900; letter-spacing: 1px;">TESLAXIPO VOUCHER</div>
               <div class="title">${entry.giveaway.title}</div>
             </div>
             <div class="details">
@@ -115,7 +115,7 @@ function TicketModal({ entry, onClose, userName }: TicketModalProps) {
               <span style="font-size:11px; font-weight:bold; letter-spacing:2px;">${ticketNumber}</span>
             </div>
             <div class="footer">
-              Valid only for drawing verification at tesla-capx.com. Non-transferrable.
+              Valid only for drawing verification at teslaxipo.com. Non-transferrable.
             </div>
           </div>
           <script>window.print();</script>

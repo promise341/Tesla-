@@ -241,7 +241,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="flex items-center gap-3">
           <img src="/images/Tesla.jpg" alt="Logo" className="h-8 w-auto rounded-md" />
           <span className="text-lg font-black tracking-widest text-gray-900 dark:text-white">
-            TESLA<span className="text-primary-500">-CAPX</span>
+            Tesla<span className="text-primary-500">xipo</span>
           </span>
         </div>
         <button
