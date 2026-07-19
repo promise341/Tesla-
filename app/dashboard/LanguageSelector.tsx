@@ -113,12 +113,17 @@ export default function LanguageSelector() {
       document.body.appendChild(el);
     }
     window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement(
-        { pageLanguage: "en", autoDisplay: false },
-        "google_translate_element"
-      );
+      try {
+        if (!window.google?.translate?.TranslateElement) return;
+        new window.google.translate.TranslateElement(
+          { pageLanguage: "en", autoDisplay: false },
+          "google_translate_element"
+        );
+      } catch (e) {
+        console.warn("Google Translate init failed:", e);
+      }
     };
-    if (window.google?.translate) window.googleTranslateElementInit();
+    if (window.google?.translate?.TranslateElement) window.googleTranslateElementInit();
     setInit(true);
   }, [initialized]);
 
