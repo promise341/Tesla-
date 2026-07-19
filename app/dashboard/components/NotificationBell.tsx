@@ -104,7 +104,7 @@ export default function NotificationBell() {
             className="fixed inset-0 z-40"
             onClick={() => setShowPanel(false)}
           />
-          <div className="absolute right-0 top-full mt-2 w-96 max-h-[600px] bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-2xl z-50 flex flex-col">
+          <div className="fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 top-16 sm:top-full mt-2 sm:w-96 max-h-[80vh] sm:max-h-[600px] bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-2xl z-50 flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
               <div>

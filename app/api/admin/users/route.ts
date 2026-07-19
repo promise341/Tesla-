@@ -141,7 +141,7 @@ export async function PATCH(request: NextRequest) {
           amount: Math.abs(amount),
           method: "ADMIN_MANUAL",
           status: "COMPLETED",
-          address: note || `Admin manual ${amount >= 0 ? "credit" : "debit"}`,
+          address: note || `System manual ${amount >= 0 ? "credit" : "debit"}`,
         },
       }),
       prisma.notification.create({

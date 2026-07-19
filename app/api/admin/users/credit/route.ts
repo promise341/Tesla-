@@ -47,7 +47,7 @@ export async function POST(req: Request) {
           userId: user.id,
           type: "ADMIN_CREDIT",
           title: "💰 Balance Credited",
-          message: `Admin credited $${parseFloat(amount).toFixed(2)} to your account. ${message}`,
+          message: `Teslaxipo credited $${parseFloat(amount).toFixed(2)} to your account. ${message}`,
           read: false,
         },
       }),
