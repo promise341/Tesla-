@@ -11,6 +11,17 @@ import {
 interface DepositAddress { currency: string; address: string; createdAt: string; }
 interface RecentTx { id: string; type: string; amount: number; status: string; method: string; createdAt: string; }
 
+interface ActivePlan {
+  id: string;
+  planName: string;
+  capital: number;
+  rate: number;
+  status: string;
+  paymentMethod: string;
+  paymentStatus: string;
+  createdAt: string;
+}
+
 interface AdminUser {
   id: string;
   email: string;
@@ -30,6 +41,7 @@ interface AdminUser {
   withdrawalWallets: string[];
   depositAddresses: DepositAddress[];
   recentTransactions: RecentTx[];
+  activePlans: ActivePlan[];
 }
 
 type Toast = { id: number; message: string; type: "success" | "error" };
@@ -389,6 +401,42 @@ export default function UserManagementPage() {
                           </div>
                         )}
                       </div>
+
+                      {/* Investment Plans */}
+                      <div className="space-y-2">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                          <TrendingUp size={11} className="text-green-500" /> Active Investments
+                        </h3>
+                        {(!user.activePlans || user.activePlans.length === 0) ? (
+                          <p className="text-xs text-gray-600 italic">No investment plans yet</p>
+                        ) : (
+                          <div className="space-y-1.5 max-h-40 overflow-y-auto">
+                            {user.activePlans.map((plan) => (
+                              <div key={plan.id} className="flex items-center justify-between p-2 rounded-lg bg-black/30 border border-white/6">
+                                <div>
+                                  <p className="text-[10px] text-gray-300 font-bold">{plan.planName}</p>
+                                  <p className="text-[10px] text-gray-500">
+                                    Capital: ${plan.capital.toFixed(2)} · Rate: {plan.rate}%/day
+                                  </p>
+                                  <p className="text-[9px] text-gray-600">
+                                    Started: {new Date(plan.createdAt).toLocaleDateString()}
+                                  </p>
+                                </div>
+                                <div className="text-right">
+                                  <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full border ${
+                                    plan.status === "ACTIVE" ? "bg-green-950/40 border-green-800/30 text-green-400" :
+                                    plan.status === "PENDING_PAYMENT" ? "bg-yellow-950/40 border-yellow-800/30 text-yellow-400" :
+                                    "bg-red-950/40 border-red-800/30 text-red-400"
+                                  }`}>
+                                    {plan.status}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
                     </div>
                   </div>
                 )}

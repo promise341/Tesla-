@@ -47,6 +47,19 @@ export async function GET(request: NextRequest) {
           orderBy: { createdAt: "desc" },
           take: 50,
         },
+        activePlans: {
+          select: {
+            id: true,
+            planName: true,
+            capital: true,
+            rate: true,
+            status: true,
+            paymentMethod: true,
+            paymentStatus: true,
+            createdAt: true,
+          },
+          orderBy: { createdAt: "desc" },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -78,6 +91,7 @@ export async function GET(request: NextRequest) {
         withdrawalWallets,
         depositAddresses: user.depositAddresses,
         recentTransactions: user.transactions.slice(0, 10),
+        activePlans: user.activePlans,
       };
     });
 
