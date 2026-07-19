@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Receipt, ArrowUpRight, ArrowDownLeft, Search, Filter, Eye, Download } from "lucide-react";
+import { Receipt, ArrowUpRight, ArrowDownLeft, Search, Filter, Eye, Download, X } from "lucide-react";
 
 interface Transaction {
   id: string;
   userId: string;
-  type: 'deposit' | 'withdrawal' | 'investment' | 'profit' | 'bonus';
+  type: string;
   amount: number;
   currency: string;
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  status: string;
   description: string;
   createdAt: string;
   updatedAt: string;
@@ -32,6 +32,7 @@ export default function TransactionLogsPage() {
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [dateFilter, setDateFilter] = useState<string>('all');
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
 
   useEffect(() => {
     fetchTransactions();
@@ -349,6 +350,7 @@ export default function TransactionLogsPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
+                        onClick={() => setSelectedTx(transaction)}
                         className="p-2 hover:bg-blue-100 text-blue-600 hover:text-blue-700 rounded-lg transition-colors"
                         title="View Details"
                       >
@@ -362,6 +364,100 @@ export default function TransactionLogsPage() {
           </div>
         )}
       </div>
+      {/* Detail Modal */}
+      {selectedTx && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedTx(null)} />
+          <div className="relative bg-[#111] text-gray-300 rounded-2xl shadow-2xl border border-red-900/30 w-full max-w-lg p-6 animate-in fade-in zoom-in duration-200">
+            <button onClick={() => setSelectedTx(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white"><X size={18} /></button>
+            <h3 className="font-extrabold text-white mb-4 flex items-center gap-1.5"><Receipt size={18} className="text-red-500" /> Transaction Detail</h3>
+            
+            <div className="bg-black/40 border border-white/5 rounded-xl p-4 mb-4 space-y-2.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Transaction ID</span>
+                <span className="font-bold text-white font-mono break-all max-w-[250px] text-right">{selectedTx.id}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">User Email</span>
+                <span className="font-bold text-white">{selectedTx.user.email}</span>
+              </div>
+              {selectedTx.user.name && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">User Name</span>
+                  <span className="font-bold text-white">{selectedTx.user.name}</span>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <span className="text-gray-500">Amount</span>
+                <span className="font-bold text-white">${selectedTx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Type</span>
+                <span className="font-bold text-white capitalize">{selectedTx.type}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Status</span>
+                <span className={`font-semibold px-2 py-0.5 rounded-full border text-[10px] uppercase ${
+                  selectedTx.status === "completed" || selectedTx.status === "APPROVED" ? "bg-green-950/40 border-green-800/30 text-green-400" :
+                  selectedTx.status === "pending" ? "bg-yellow-950/40 border-yellow-800/30 text-yellow-400" :
+                  "bg-red-950/40 border-red-800/30 text-red-400"
+                }`}>{selectedTx.status}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Method</span>
+                <span className="font-bold text-white font-mono">{selectedTx.currency || "N/A"}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Description</span>
+                <span className="font-bold text-white text-right max-w-[250px]">{selectedTx.description || "No description"}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Date</span>
+                <span className="font-bold text-white">{new Date(selectedTx.createdAt).toLocaleString()}</span>
+              </div>
+            </div>
+
+            {selectedTx.metadata && (Object.keys(selectedTx.metadata).length > 0) && (
+              <div className="bg-black/40 border border-white/5 rounded-xl p-4 space-y-2.5 text-xs mb-4">
+                <h4 className="font-bold text-white border-b border-white/10 pb-1.5 mb-1.5">Metadata</h4>
+                {selectedTx.metadata.cryptoType && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Crypto Currency</span>
+                    <span className="font-bold text-white">{selectedTx.metadata.cryptoType}</span>
+                  </div>
+                )}
+                {selectedTx.metadata.walletAddress && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Address / Wallet</span>
+                    <span className="font-bold text-white font-mono break-all max-w-[250px] text-right">{selectedTx.metadata.walletAddress}</span>
+                  </div>
+                )}
+                {selectedTx.metadata.transactionHash && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Tx Hash</span>
+                    <span className="font-bold text-white font-mono break-all max-w-[250px] text-right">{selectedTx.metadata.transactionHash}</span>
+                  </div>
+                )}
+                {selectedTx.metadata.proofUrl && (
+                  <div className="space-y-1">
+                    <span className="text-gray-500">Proof Document</span>
+                    <div className="border border-white/10 rounded-lg overflow-hidden mt-1.5">
+                      <img src={selectedTx.metadata.proofUrl} alt="Transaction Proof" className="w-full h-auto max-h-48 object-contain" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button
+              onClick={() => setSelectedTx(null)}
+              className="w-full py-2.5 bg-red-800 hover:bg-red-700 text-white rounded-xl font-bold text-sm transition-colors shadow-lg shadow-red-900/40"
+            >
+              Close Details
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
