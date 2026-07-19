@@ -37,6 +37,50 @@ const COUNTRIES = [
   "Uzbekistan","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe",
 ];
 
+function compressAndResizeImage(file: File, maxW: number, maxH: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxW) {
+            height = Math.round((height * maxW) / width);
+            width = maxW;
+          }
+        } else {
+          if (height > maxH) {
+            width = Math.round((width * maxH) / height);
+            height = maxH;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Could not get canvas context"));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        // Compress as JPEG at 0.75 quality for tiny payload size
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.75);
+        resolve(dataUrl);
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+}
+
 type Tab = "personal" | "security";
 
 interface UserProfile {
@@ -147,19 +191,19 @@ export default function AccountSettingsPage() {
     uploadAvatar(file);
   }
 
-  /* ── Upload avatar to server via FormData ── */
+  /* ── Compress and Upload Avatar ── */
   async function uploadAvatar(file: File) {
     setUploading(true);
     const tid = toast.loading("Uploading photo…");
     try {
-      const form = new FormData();
-      form.append("file", file);
+      // Compress & resize image to max 400x400 on client side
+      const compressedDataUrl = await compressAndResizeImage(file, 400, 400);
 
       const res = await fetch("/api/user/avatar", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: form,
-        // Do NOT set Content-Type — browser sets it with the correct boundary
+        body: JSON.stringify({ dataUrl: compressedDataUrl }),
       });
 
       const data = await res.json();
@@ -175,8 +219,9 @@ export default function AccountSettingsPage() {
       setPreviewUrl(prev => { if (prev) URL.revokeObjectURL(prev); return null; });
       toast.success("Profile photo updated!", { id: tid, duration: 4000 });
       window.dispatchEvent(new CustomEvent("avatar-updated"));
-    } catch {
-      toast.error("Network error. Please try again.", { id: tid });
+    } catch (err) {
+      console.error("Avatar upload failed:", err);
+      toast.error("Network error. Please try a smaller image.", { id: tid });
       setPreviewUrl(prev => { if (prev) URL.revokeObjectURL(prev); return null; });
     } finally {
       setUploading(false);
