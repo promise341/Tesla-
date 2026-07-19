@@ -11,7 +11,7 @@ export default function LogoutPage() {
     } catch {}
     
     // Sign out from NextAuth
-    signOut({ redirect: true, callbackUrl: "/login" });
+    signOut({ redirect: true, callbackUrl: "/login?message=signedout" });
   }, []);
 
   return (

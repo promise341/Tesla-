@@ -136,7 +136,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         // Check if user is suspended
         if (data?.suspended) {
           alert(data.message || "Your account has been suspended. Please contact support.");
-          signOut({ callbackUrl: '/login' });
+          signOut({ callbackUrl: '/login?message=signedout' });
           return;
         }
         
@@ -223,7 +223,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   function handleSignOut() {
     setUserMenuOpen(false);
     try { localStorage.removeItem("_demo_loggedin"); } catch {}
-    signOut({ callbackUrl: "/login" });
+    signOut({ callbackUrl: "/login?message=signedout" });
   }
 
   // Use live name from API (reflects any name changes), fall back to session

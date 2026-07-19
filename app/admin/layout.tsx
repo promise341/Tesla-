@@ -235,7 +235,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 Please sign out and log in with <span className="text-red-400 font-mono">admin@teslacapx.com</span>
               </p>
               <button
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                onClick={() => signOut({ callbackUrl: "/login?message=signedout" })}
                 className="w-full flex items-center justify-center gap-2 py-3 px-5
                   bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800
                   text-white text-sm font-bold rounded-xl transition-all duration-200
@@ -364,7 +364,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <button
             onClick={() => {
               fetch("/api/admin/security/logout", { method: "POST" }).finally(() => {
-                window.location.href = "/api/auth/signout";
+                signOut({ callbackUrl: "/login?message=signedout" });
               });
             }}
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5

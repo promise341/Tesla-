@@ -17,6 +17,10 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(() => {
+    const message = params?.get("message");
+    if (message === "signedout") {
+      return "✅ You have been signed out successfully.";
+    }
     // Show URL error on initial load if present
     if (urlError === "suspended") {
       return "Your account has been suspended. Please contact support.";
