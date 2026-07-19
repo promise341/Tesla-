@@ -147,7 +147,7 @@ const VIP_CARDS = [
     borderColor: "border-purple-500 dark:border-purple-400",
     accentColor: "text-purple-500",
     icon: <Rocket size={22} className="text-purple-400" />,
-    tagline: "Lifetime membership. The apex of Tesla-CapX membership.",
+    tagline: "Lifetime membership. The apex of Teslaxipo membership.",
     features: [
       "Everything in Black",
       "Lifetime zero-fee trading",

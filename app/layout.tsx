@@ -8,8 +8,8 @@ import TawkToChat from "./TawkToChat";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Tesla-CapX | Precision Investing, Maximum Growth",
-  description: "Sign up with Tesla-CapX to join thousands of investors",
+  title: "Teslaxipo | Precision Investing, Maximum Growth",
+  description: "Sign up with Teslaxipo to join thousands of investors",
 };
 
 export const viewport: Viewport = {

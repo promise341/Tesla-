@@ -115,11 +115,11 @@ export default function ClientShell({ children }: { children: React.ReactNode })
                 >
                   <img
                     src="/images/Tesla.jpg"
-                    alt="Tesla-CapX Logo"
+                    alt="Teslaxipo Logo"
                     className="h-8 w-auto rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 animate-logo-bounce select-none"
                   />
                   <span>
-                    TESLA-<span className="text-primary-500">CAPX</span>
+                    Tesla<span className="text-primary-500">xipo</span>
                   </span>
                 </Link>
               </div>
@@ -243,8 +243,8 @@ export default function ClientShell({ children }: { children: React.ReactNode })
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/images/Tesla.jpg" alt="Tesla-CapX Logo" className="h-7 w-auto rounded-md border border-gray-800" />
-                <h3 className="text-white font-bold text-lg">TESLA-CAPX</h3>
+                <img src="/images/Tesla.jpg" alt="Teslaxipo Logo" className="h-7 w-auto rounded-md border border-gray-800" />
+                <h3 className="text-white font-bold text-lg">Teslaxipo</h3>
               </div>
               <p className="text-sm text-gray-500 leading-relaxed">
                 Join thousands of investors utilizing precision-engineered automated algorithms, stocks management, and EV vehicle trading workflows.
@@ -265,18 +265,18 @@ export default function ClientShell({ children }: { children: React.ReactNode })
                 <li><a href="#" className="hover:text-primary-500 transition-colors">Terms of Service</a></li>
                 <li><a href="#" className="hover:text-primary-500 transition-colors">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-primary-500 transition-colors">Risk Disclaimer</a></li>
-                <li><a href="mailto:support@teslacapx.com" className="hover:text-primary-500 transition-colors">support@teslacapx.com</a></li>
+                <li><a href="mailto:support@teslaxipo.com" className="hover:text-primary-500 transition-colors">support@teslaxipo.com</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold text-sm mb-4">Regulatory Notice</h4>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Financial trading involves risk. All plans provided on this portal are models. Tesla-CapX is an independent trading company operating in the UK.
+                Financial trading involves risk. All plans provided on this portal are models. Teslaxipo is an independent trading company operating in the UK.
               </p>
             </div>
           </div>
           <div className="border-t border-gray-800 my-8 pt-8 text-center text-xs text-gray-600">
-            © {new Date().getFullYear()} Tesla-CapX. All rights reserved.
+            © {new Date().getFullYear()} Teslaxipo. All rights reserved.
           </div>
         </div>
       </footer>

@@ -79,13 +79,13 @@ function LoginForm() {
                 <img
                   src="https://teslacapx.com/storage/app/public/photos/HAq45OMWd5nUmcX2yNzNY6x5MURQeV0acUk6NB7X.jpg"
                   className="h-16 w-auto rounded-xl shadow-md border border-gray-200 dark:border-gray-700"
-                  alt="Tesla-CapX Logo"
+                  alt="Teslaxipo Logo"
                 />
               </div>
 
               {/* Title */}
               <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-950 dark:text-white mb-2">Welcome Back</h1>
-              <h2 className="text-lg font-bold mb-3"><span className="text-primary-500">Tesla-CapX</span></h2>
+              <h2 className="text-lg font-bold mb-3"><span className="text-primary-500">Teslaxipo</span></h2>
               <p className="text-gray-500 dark:text-gray-400 text-sm">Access your trading dashboard</p>
 
               {/* Trading Stats */}

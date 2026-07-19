@@ -232,7 +232,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <div className="space-y-3">
               <p className="text-xs text-gray-600">
-                Please sign out and log in with <span className="text-red-400 font-mono">admin@teslacapx.com</span>
+                Please sign out and log in with <span className="text-red-400 font-mono">admin@teslaxipo.com</span>
               </p>
               <button
                 onClick={() => signOut({ callbackUrl: "/login?message=signedout" })}
@@ -291,7 +291,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#111] animate-pulse" />
             </div>
             <div>
-              <h1 className="text-sm font-bold text-white tracking-wide">CAPX ADMIN</h1>
+              <h1 className="text-sm font-bold text-white tracking-wide">TESLAXIPO ADMIN</h1>
               <p className="text-[10px] text-red-400 font-medium tracking-widest">SECURE PANEL</p>
             </div>
           </div>

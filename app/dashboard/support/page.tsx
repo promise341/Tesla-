@@ -23,7 +23,7 @@ const FAQS = [
   { q: "How does copy trading work?",        a: "Browse expert traders, choose one, set your investment amount (min varies per expert), and your account will automatically mirror their trades." },
   { q: "What is the minimum investment?",    a: "Minimum investment depends on the plan or bot. Some plans start from $100, while expert traders may require $500+." },
   { q: "How do I close an open trade?",      a: "Go to your trade page and click the 'Close' button on any open position. Your P&L will be credited to your balance instantly." },
-  { q: "Are my funds safe?",                 a: "Tesla-CapX uses industry-standard security. Funds are managed through verified payment channels with multi-layer verification." },
+  { q: "Are my funds safe?",                 a: "Teslaxipo uses industry-standard security. Funds are managed through verified payment channels with multi-layer verification." },
 ];
 
 export default function SupportPage() {
@@ -40,7 +40,7 @@ export default function SupportPage() {
   const [chatOpen, setChatOpen]       = useState(false);
   const [chatInput, setChatInput]     = useState("");
   const [chatMessages, setChatMessages] = useState<Array<{ sender: "user" | "bot"; text: string; time: string }>>([
-    { sender: "bot", text: "Hello! Welcome to Tesla-CapX live support. How can I help you today?", time: "Just now" }
+    { sender: "bot", text: "Hello! Welcome to Teslaxipo live support. How can I help you today?", time: "Just now" }
   ]);
   const [chatTyping, setChatTyping]   = useState(false);
 
@@ -261,7 +261,7 @@ export default function SupportPage() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
               </span>
               <div>
-                <p className="text-xs font-black">Tesla-CapX Assistant</p>
+                <p className="text-xs font-black">Teslaxipo Assistant</p>
                 <p className="text-[9px] text-white/70">Online & Ready</p>
               </div>
             </div>

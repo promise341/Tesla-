@@ -181,7 +181,7 @@ export default function MyCarOrdersPage() {
             Total Paid: $${order.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </div>
           <div class="footer">
-            Thank you for purchasing with Tesla-CapX. For support, contact orders@teslacapx.com.
+            Thank you for purchasing with Teslaxipo. For support, contact orders@teslaxipo.com.
           </div>
           <script>window.print();</script>
         </body>

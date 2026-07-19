@@ -68,7 +68,7 @@ const VIP_CARDS_DATA: Record<string, any> = {
     validity: "Lifetime access",
     img: "/Elite Badge.png",
     benefits: 5,
-    tagline: "Lifetime membership. The apex of Tesla-CapX membership.",
+    tagline: "Lifetime membership. The apex of Teslaxipo membership.",
   },
 };
 

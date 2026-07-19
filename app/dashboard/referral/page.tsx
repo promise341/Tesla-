@@ -115,9 +115,9 @@ export default function ReferralPage() {
         {referralLink && (
           <div className="flex gap-2 flex-wrap">
             {[
-              { label:"Share on X",      bg:"bg-black hover:bg-gray-800",            href:`https://twitter.com/intent/tweet?text=${encodeURIComponent("Join Tesla-CapX & start earning! "+referralLink)}` },
-              { label:"WhatsApp",        bg:"bg-green-500 hover:bg-green-600",       href:`https://wa.me/?text=${encodeURIComponent("Join Tesla-CapX: "+referralLink)}` },
-              { label:"Email",           bg:"bg-blue-500 hover:bg-blue-600",         href:`mailto:?subject=Join+Tesla-CapX&body=${encodeURIComponent("Join me on Tesla-CapX: "+referralLink)}` },
+              { label:"Share on X",      bg:"bg-black hover:bg-gray-800",            href:`https://twitter.com/intent/tweet?text=${encodeURIComponent("Join Teslaxipo & start earning! "+referralLink)}` },
+              { label:"WhatsApp",        bg:"bg-green-500 hover:bg-green-600",       href:`https://wa.me/?text=${encodeURIComponent("Join Teslaxipo: "+referralLink)}` },
+              { label:"Email",           bg:"bg-blue-500 hover:bg-blue-600",         href:`mailto:?subject=Join+Teslaxipo&body=${encodeURIComponent("Join me on Teslaxipo: "+referralLink)}` },
             ].map(b => (
               <a key={b.label} href={b.href} target="_blank" rel="noopener noreferrer"
                 className={`inline-flex items-center px-4 py-2 ${b.bg} text-white text-xs font-bold rounded-xl transition-colors`}>

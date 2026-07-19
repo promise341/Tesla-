@@ -45,7 +45,7 @@ export default function Register() {
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-200 dark:border-gray-700 p-8 shadow">
           <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">Create your account</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Register to access your Tesla-CapX dashboard.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Register to access your Teslaxipo dashboard.</p>
 
           {error && <div className="mb-4 text-sm text-red-700 bg-red-50 p-3 rounded">{error}</div>}
 
