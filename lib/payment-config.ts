@@ -5,10 +5,11 @@
  */
 
 export const PAYMENT_WALLETS = {
-  BTC: "bc1qfkt5syd6n2dsqe3af2drhkmq8w0myqeealh7t6",
+  BTC: "bc1qfkt5syd6n2dsge3af2drhkmq8w0myqealh7t6",
   ETH: "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
-  USDT_TRC20: "TVyZQzexvLtq8uBC8bcXJykqtRaC4VKW6u",
+  USDT_TRC20: "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
   BNB_BSC: "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
+  XRP: "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3",
   SOLANA: "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg",
 } as const;
 
@@ -44,6 +45,14 @@ export const PAYMENT_METHODS = [
     desc: "Cryptocurrency Payment",
     address: PAYMENT_WALLETS.BNB_BSC,
     network: "Binance Smart Chain",
+  },
+  {
+    id: "XRP",
+    name: "XRP",
+    fullName: "Ripple (XRP)",
+    desc: "Cryptocurrency Payment",
+    address: PAYMENT_WALLETS.XRP,
+    network: "XRP Network",
   },
   {
     id: "SOLANA",

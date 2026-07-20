@@ -74,9 +74,9 @@ const VIP_CARDS_DATA: Record<string, any> = {
 
 const PAYMENT_METHODS = [
   { id: "BALANCE", name: "Account Balance", desc: "Pay instantly from account balance", address: "N/A" },
-  { id: "BTC", name: "Bitcoin", desc: "Cryptocurrency Payment", address: process.env.NEXT_PUBLIC_BTC_WALLET || "bc1qfkt5syd6n2dsqe3af2drhkmq8w0myqeealh7t6" },
+  { id: "BTC", name: "Bitcoin", desc: "Cryptocurrency Payment", address: process.env.NEXT_PUBLIC_BTC_WALLET || "bc1qfkt5syd6n2dsge3af2drhkmq8w0myqealh7t6" },
   { id: "ETH", name: "Ethereum", desc: "Cryptocurrency Payment", address: process.env.NEXT_PUBLIC_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
-  { id: "USDT", name: "USDT", desc: "Cryptocurrency Payment", address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "TVyZQzexvLtq8uBC8bcXJykqtRaC4VKW6u" },
+  { id: "USDT", name: "USDT (TRC20)", desc: "Cryptocurrency Payment", address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u" },
 ];
 
 export default function VIPCardPurchasePage() {

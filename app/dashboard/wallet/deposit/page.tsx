@@ -20,42 +20,49 @@ import {
 // REAL CRYPTOCURRENCY WALLET ADDRESSES with fallback defaults
 const CRYPTO_WALLETS = {
   BTC: {
-    address: process.env.NEXT_PUBLIC_BTC_WALLET || "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+    address: process.env.NEXT_PUBLIC_BTC_WALLET || "bc1qfkt5syd6n2dsge3af2drhkmq8w0myqealh7t6",
     name: "Bitcoin",
     network: "Bitcoin Network",
     icon: "₿",
     color: "bg-orange-500"
   },
   ETH: {
-    address: process.env.NEXT_PUBLIC_ETH_WALLET || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    address: process.env.NEXT_PUBLIC_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
     name: "Ethereum", 
     network: "Ethereum Network",
     icon: "Ξ",
     color: "bg-blue-500"
   },
   BNB: {
-    address: process.env.NEXT_PUBLIC_BNB_WALLET || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    address: process.env.NEXT_PUBLIC_BNB_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
     name: "BNB",
     network: "BSC Network (Binance Smart Chain)",
     icon: "◆",
     color: "bg-yellow-500"
   },
+  XRP: {
+    address: process.env.NEXT_PUBLIC_XRP_WALLET || "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3",
+    name: "XRP",
+    network: "XRP Network",
+    icon: "✕",
+    color: "bg-cyan-500"
+  },
   SOLANA: {
-    address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "HN7cAB1R7GyZ23Y65tW8LE3RY3ovJu5dNiH14H1yH1",
+    address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg",
     name: "Solana",
     network: "Solana Network",
     icon: "◎",
     color: "bg-purple-500"
   },
   "USDT-ETH": {
-    address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
     name: "USDT (Ethereum)",
     network: "Ethereum Network",
     icon: "₮",
     color: "bg-green-500"
   },
   "USDT-TRX": {
-    address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TX1234567890abcdef1234567890abcdef",
+    address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
     name: "USDT (Tron)",
     network: "Tron Network", 
     icon: "₮",

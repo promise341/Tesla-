@@ -20,10 +20,11 @@ const CARS_CATALOG: Record<string, { name: string; price: number; img: string; s
 };
 
 const CRYPTO_METHODS = [
-  { id: "BTC",    name: "Bitcoin",  address: process.env.NEXT_PUBLIC_BTC_WALLET || "bc1qfkt5syd6n2dsqe3af2drhkmq8w0myqeealh7t6" },
+  { id: "BTC",    name: "Bitcoin",  address: process.env.NEXT_PUBLIC_BTC_WALLET || "bc1qfkt5syd6n2dsge3af2drhkmq8w0myqealh7t6" },
   { id: "ETH",    name: "Ethereum", address: process.env.NEXT_PUBLIC_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
-  { id: "USDT",   name: "USDT",     address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "TVyZQzexvLtq8uBC8bcXJykqtRaC4VKW6u" },
-  { id: "BNB",    name: "BNB",      address: process.env.NEXT_PUBLIC_BNB_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
+  { id: "USDT",   name: "USDT (TRC20)", address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u" },
+  { id: "BNB",    name: "BNB (BSC)", address: process.env.NEXT_PUBLIC_BNB_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
+  { id: "XRP",    name: "XRP",      address: process.env.NEXT_PUBLIC_XRP_WALLET || "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3" },
   { id: "SOLANA", name: "Solana",   address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg" },
 ];
 

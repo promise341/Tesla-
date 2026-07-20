@@ -18,11 +18,12 @@ const REAL_ESTATE_PLANS = [
 ];
 
 const PAYMENT_METHODS = [
-  { id: "BTC", name: "Bitcoin (BTC)", address: "bc1qfkt5syd6n2dsqe3af2drhkmq8w0myqeealh7t6" },
-  { id: "ETH", name: "Ethereum (ETH)", address: "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
-  { id: "USDT", name: "Tether (USDT-TRC20)", address: "TVyZQzexvLtq8uBC8bcXJykqtRaC4VKW6u" },
-  { id: "BNB", name: "Binance Coin (BNB-BSC)", address: "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
-  { id: "SOLANA", name: "Solana (SOL)", address: "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg" },
+  { id: "BTC", name: "Bitcoin (BTC)", address: process.env.NEXT_PUBLIC_BTC_WALLET || "bc1qfkt5syd6n2dsge3af2drhkmq8w0myqealh7t6" },
+  { id: "ETH", name: "Ethereum (ETH)", address: process.env.NEXT_PUBLIC_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
+  { id: "USDT", name: "Tether (USDT-TRC20)", address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u" },
+  { id: "BNB", name: "Binance Coin (BNB-BSC)", address: process.env.NEXT_PUBLIC_BNB_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
+  { id: "XRP", name: "Ripple (XRP)", address: process.env.NEXT_PUBLIC_XRP_WALLET || "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3" },
+  { id: "SOLANA", name: "Solana (SOL)", address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg" },
 ];
 
 export default function RequestAccessPage() {
