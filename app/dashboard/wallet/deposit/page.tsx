@@ -61,14 +61,8 @@ const CRYPTO_WALLETS = {
     icon: "◎",
     color: "bg-purple-500"
   },
-  "USDT-ETH": {
-    address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
-    name: "USDT (Ethereum)",
-    network: "Ethereum Network",
-    icon: "₮",
-    color: "bg-green-500"
-  },
-  "USDT-TRX": {
+
+  "TETHER-USDT": {
     address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
     name: "USDT (Tron)",
     network: "Tron Network", 
