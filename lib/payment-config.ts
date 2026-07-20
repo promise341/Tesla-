@@ -98,6 +98,8 @@ export function isValidWalletAddress(address: string): boolean {
     ETH: /^0x[a-fA-F0-9]{40}$/,
     USDT_TRC20: /^T[A-Za-z1-9]{33}$/,
     SOLANA: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/,
+    XRP: /^r[0-9a-zA-Z]{24,34}$/,
+    DOGE: /^D[5-9A-HJ-NP-Ua-km-z]{33}$/,
   };
   
   return Object.values(patterns).some((pattern) => pattern.test(address));

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { cookies } from "next/headers";
 import { verify } from "jsonwebtoken";
 import prisma from "@/lib/prisma";
@@ -8,14 +10,31 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 export async function POST(req: Request) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
+    const session = await getServerSession(authOptions);
+    let user = null;
 
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (session?.user?.email) {
+      user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { id: true, balance: true, email: true, name: true }
+      });
+    } else {
+      const cookieStore = await cookies();
+      const token = cookieStore.get("auth_token")?.value;
+      if (token) {
+        try {
+          const decoded = verify(token, JWT_SECRET) as { userId: string };
+          user = await prisma.user.findUnique({
+            where: { id: decoded.userId },
+            select: { id: true, balance: true, email: true, name: true }
+          });
+        } catch {}
+      }
     }
 
-    const decoded = verify(token, JWT_SECRET) as { userId: string };
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const {
       carId,
@@ -48,16 +67,6 @@ export async function POST(req: Request) {
         { error: "Payment proof and wallet address are required for crypto payments" },
         { status: 400 }
       );
-    }
-
-    // Get user with balance
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: { id: true, balance: true, email: true, name: true }
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // ── Balance validation for BALANCE payment method ──

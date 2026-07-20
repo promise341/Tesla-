@@ -49,11 +49,15 @@ export async function POST(req: Request) {
     // Bitcoin Legacy
     btcLegacy: /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/,
     // Bitcoin SegWit (bech32)
-    btcSegWit: /^bc1[a-z0-9]{39,59}$/,
+    btcSegWit: /^bc1[a-z0-9]{38,59}$/,
     // Solana
     solana: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/,
     // Tron (USDT-TRX)
-    tron: /^T[A-Za-z1-9]{33}$/
+    tron: /^T[A-Za-z1-9]{33}$/,
+    // Ripple (XRP)
+    xrp: /^r[0-9a-zA-Z]{24,34}$/,
+    // Dogecoin (DOGE)
+    doge: /^D[5-9A-HJ-NP-Ua-km-z]{33}$/
   };
 
   const isValidWallet = 
@@ -61,11 +65,13 @@ export async function POST(req: Request) {
     walletValidation.btcLegacy.test(walletAddress) ||
     walletValidation.btcSegWit.test(walletAddress) ||
     walletValidation.solana.test(walletAddress) ||
-    walletValidation.tron.test(walletAddress);
+    walletValidation.tron.test(walletAddress) ||
+    walletValidation.xrp.test(walletAddress) ||
+    walletValidation.doge.test(walletAddress);
   
   if (!isValidWallet) {
     return NextResponse.json(
-      { error: "Invalid wallet address format. Please enter a valid cryptocurrency wallet address (Ethereum, Bitcoin, Solana, Tron, or BNB)." },
+      { error: "Invalid wallet address format. Please enter a valid cryptocurrency wallet address (Ethereum, Bitcoin, Solana, Tron, BNB, XRP, or Dogecoin)." },
       { status: 400 }
     );
   }

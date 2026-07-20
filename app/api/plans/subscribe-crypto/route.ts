@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!["BTC", "ETH", "BNB", "SOLANA", "USDT", "USDT-ETH", "USDT-TRX"].includes(paymentMethod)) {
+    if (!["BTC", "ETH", "BNB", "SOLANA", "XRP", "DOGE", "USDT", "USDT-ETH", "USDT-TRX"].includes(paymentMethod)) {
       return NextResponse.json(
         { error: "Invalid payment method" },
         { status: 400 }
@@ -65,12 +65,15 @@ export async function POST(req: Request) {
 
     // Validate wallet address format
     const isValidEthereum = userWalletAddress.startsWith("0x") && userWalletAddress.length === 42;
-    const isValidBitcoin = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(userWalletAddress) || /^bc1[a-z0-9]{39,59}$/.test(userWalletAddress);
+    const isValidBitcoin = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(userWalletAddress) || /^bc1[a-z0-9]{38,59}$/.test(userWalletAddress);
     const isValidSolana = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(userWalletAddress);
+    const isValidTron = /^T[A-Za-z1-9]{33}$/.test(userWalletAddress);
+    const isValidRipple = /^r[0-9a-zA-Z]{24,34}$/.test(userWalletAddress);
+    const isValidDoge = /^D[5-9A-HJ-NP-Ua-km-z]{33}$/.test(userWalletAddress);
     
-    if (!isValidEthereum && !isValidBitcoin && !isValidSolana) {
+    if (!isValidEthereum && !isValidBitcoin && !isValidSolana && !isValidTron && !isValidRipple && !isValidDoge) {
       return NextResponse.json(
-        { error: "Invalid wallet address format" },
+        { error: "Invalid wallet address format. Please enter a valid crypto address." },
         { status: 400 }
       );
     }

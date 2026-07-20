@@ -43,7 +43,9 @@ export async function validatePaymentProof(buffer: Buffer): Promise<{ isValid: b
       "txid", "transaction", "hash", "status", "completed", "success", "successful",
       "confirmed", "recipient", "blockchain", "wallet", "address", "from", "to",
       "amount", "sent", "payment", "transferred", "transfer", "btc", "eth", "usdt", 
-      "bnb", "solana", "sol", "fee", "gas", "block", "network", "details", "order", "receipt"
+      "bnb", "solana", "sol", "xrp", "doge", "trx", "tron", "fee", "gas", "block", "network",
+      "details", "order", "receipt", "exodus", "trust", "metamask", "binance", "coinbase",
+      "okx", "bybit", "luno", "crypto", "receive", "send"
     ];
 
     // Count how many matching credentials/keywords are found
