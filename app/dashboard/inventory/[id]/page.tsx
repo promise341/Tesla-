@@ -23,31 +23,54 @@ const catalog: Record<string, {
 }> = {
   "cyber-truck": {
     id: "cyber-truck", name: "Cyber Truck",
-    subtitle: "Tesla Cyber Truck 2025 • Metallic Silver • Automatic",
+    subtitle: "Tesla Cyber Truck 2025 • Stainless Steel • Tri-Motor AWD",
     type: "EV", stock: 4,
     range: "320 miles", speed: "130 mph", acceleration: "0-60 in 2.6s", hp: "845 hp",
-    price: 91500, year: 2025, color: "Metallic Silver", transmission: "Automatic",
+    price: 91500, year: 2025, color: "Stainless Steel", transmission: "Automatic",
     gallery: [
-      "https://teslacapx.com/dash/cars/5/69c2a1cf16d3c.jpeg",
-      "https://images.unsplash.com/photo-1692607038295-d651a294abd0?w=1200&q=85",
-      "https://images.unsplash.com/photo-1692607038429-4284c1ca5cff?w=1200&q=85",
-      "https://images.unsplash.com/photo-1692360816892-9c4c0e95f97e?w=1200&q=85",
+      "/images/cars/cybertruck_exterior.png",
+      "/images/cars/cybertruck_interior.png",
     ],
-    about: "The Tesla Cybertruck is a futuristic all-electric pickup truck with ultra-hard 30X cold-rolled stainless steel body. Designed for both heavy-duty work and high performance, it's the most durable exterior of any passenger vehicle ever built, while maintaining incredible utility.",
+    about: "The Tesla Cybertruck is a revolutionary all-electric pickup truck with ultra-hard 30X cold-rolled stainless steel body. Designed for both heavy-duty work and high performance, it's the most durable exterior of any passenger vehicle ever built, while maintaining incredible utility.",
     features: [
       "Ultra-Hard 30X Stainless Steel Exoskeleton",
-      "Up to 800 hp with Cyberbeast powertrain",
-      "7,500 lb Towing Capacity",
+      "845 hp Cyberbeast Tri-Motor Powertrain",
+      "11,000 lb Towing Capacity",
       "Self-leveling Adaptive Air Suspension",
       "120V & 240V Onboard Power Outlets",
-      "Tri-Motor AWD Available",
-      "Bulletproof Glass Standard",
+      "Armored Glass Windows",
+      "Vault-Style Lockable Storage Bed",
       "Autopilot Included",
     ],
     specs: [
       { label: "Range", value: "320 miles" }, { label: "0–60 mph", value: "2.6 sec" },
       { label: "Top Speed", value: "130 mph" }, { label: "Payload", value: "2,500 lbs" },
-      { label: "Towing", value: "7,500 lbs" }, { label: "Drive", value: "AWD" },
+      { label: "Towing", value: "11,000 lbs" }, { label: "Drive", value: "Tri-Motor AWD" },
+    ],
+  },
+  "cybercab": {
+    id: "cybercab", name: "Tesla Cybercab",
+    subtitle: "Tesla Cybercab Autonomous Robotaxi 2026 • Brushed Gold/Silver",
+    type: "EV", stock: 5,
+    range: "300 miles", speed: "110 mph", acceleration: "0-60 in 4.0s", hp: "350 hp",
+    price: 29990, year: 2026, color: "Brushed Gold/Silver", transmission: "Autonomous Drive System",
+    gallery: [
+      "/images/cars/cybercab_exterior.png",
+    ],
+    about: "The Tesla Cybercab is an autonomous, fully self-driving robotaxi built without a steering wheel or pedals. Designed for premium passenger transportation with wireless inductive charging and butterfly doors.",
+    features: [
+      "Full Self-Driving (Supervised/Unsupervised)",
+      "Zero Steering Wheel & Pedals Required",
+      "Inductive Wireless Pad Charging",
+      "Vertical Butterfly Doors",
+      "Large Central Entertainment Display",
+      "2-Passenger Ultra-Spacious Cabin",
+      "Ultra-Low Operating Cost per Mile",
+    ],
+    specs: [
+      { label: "Range", value: "300 miles" }, { label: "Drive", value: "Full Autonomous FSD" },
+      { label: "Charging", value: "Inductive Wireless" }, { label: "Doors", value: "Butterfly Vertical" },
+      { label: "Seating", value: "2 Adults" }, { label: "Top Speed", value: "110 mph" },
     ],
   },
   "tesla-model-3-long-range-1": {
@@ -57,10 +80,7 @@ const catalog: Record<string, {
     range: "363 miles", speed: "140 mph", acceleration: "0-60 in 4.2s", hp: "394 hp",
     price: 42490, year: 2025, color: "Deep Blue Metallic", transmission: "Automatic",
     gallery: [
-      "https://teslacapx.com/dash/cars/4/69c29f1b7979e.jpg",
-      "https://images.unsplash.com/photo-1536700503339-1e4b06520771?w=1200&q=85",
-      "https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=1200&q=85",
-      "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1200&q=85",
+      "/images/cars/model3_exterior.png",
     ],
     about: "Model 3 Long Range is designed for maximum efficiency with dual motor AWD, quick acceleration, long range, and fast charging. The most popular Tesla ever made, combining sleek design with practical everyday usability.",
     features: [
@@ -80,16 +100,13 @@ const catalog: Record<string, {
     ],
   },
   "tesla-model-y": {
-    id: "tesla-model-y", name: "Tesla Model Y",
+    id: "tesla-model-y", name: "Tesla Model Y Performance",
     subtitle: "Tesla Model Y 2025 • Solid Black • Automatic",
     type: "EV", stock: 12,
     range: "337 miles", speed: "155 mph", acceleration: "0-60 in 3.5s", hp: "456 hp",
     price: 43489, year: 2025, color: "Solid Black", transmission: "Automatic",
     gallery: [
-      "https://teslacapx.com/dash/cars/6/69c2cf1617bff.png",
-      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=1200&q=85",
-      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1200&q=85",
-      "https://images.unsplash.com/photo-1617651823081-270acf1ad775?w=1200&q=85",
+      "/images/cars/modely_exterior.png",
     ],
     about: "Model Y provides maximum versatility — able to carry 7 passengers and their gear in a spacious SUV body. Dual motor all-wheel drive with maximum range. The best-selling electric vehicle in history.",
     features: [
@@ -99,26 +116,23 @@ const catalog: Record<string, {
       "Panoramic Glass Roof",
       "15.4\" Center Touchscreen",
       "Autopilot Included",
-      "70+ Cu Ft Cargo Space",
+      "76 Cu Ft Cargo Space",
       "Dog Mode & Camp Mode",
     ],
     specs: [
       { label: "Range", value: "337 miles" }, { label: "0–60 mph", value: "3.5 sec" },
       { label: "Top Speed", value: "155 mph" }, { label: "Horsepower", value: "456 hp" },
-      { label: "Seats", value: "5 / 7" }, { label: "Cargo", value: "70+ cu ft" },
+      { label: "Seats", value: "5 / 7" }, { label: "Cargo", value: "76 cu ft" },
     ],
   },
   "tesla-roadster": {
-    id: "tesla-roadster", name: "Tesla Roadster",
+    id: "tesla-roadster", name: "Tesla Roadster Supercar",
     subtitle: "Tesla Roadster Supercar 2026 • Roadster Red • Automatic",
     type: "EV", stock: 1,
     range: "620 miles", speed: "250+ mph", acceleration: "0-60 in 1.9s", hp: "1,200 hp",
     price: 199499, year: 2026, color: "Roadster Red", transmission: "Automatic",
     gallery: [
-      "https://teslacapx.com/dash/cars/7/69c3ee94623a4.webp",
-      "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=1200&q=85",
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85",
-      "https://images.unsplash.com/photo-1617650728517-bb5fab83c2a4?w=1200&q=85",
+      "/images/cars/roadster_exterior.png",
     ],
     about: "An all-electric supercar maximizing aerodynamic engineering with record-setting acceleration, range, and high-performance design. The fastest production car ever made, with the world's longest electric vehicle range.",
     features: [
@@ -138,15 +152,13 @@ const catalog: Record<string, {
     ],
   },
   "tesla-semi": {
-    id: "tesla-semi", name: "Tesla Semi",
+    id: "tesla-semi", name: "Tesla Semi Truck",
     subtitle: "Tesla Semi Truck 2026 • Arctic White • Automatic",
     type: "EV", stock: 2,
     range: "500 miles", speed: "105 mph", acceleration: "0-60 in 15s (loaded)", hp: "1,020 hp",
     price: 28500, year: 2026, color: "Arctic White", transmission: "Automatic",
     gallery: [
-      "https://teslacapx.com/dash/cars/13/69c40a3f6c962.jpg",
-      "https://images.unsplash.com/photo-1666518533540-2c79ccad21e3?w=1200&q=85",
-      "https://images.unsplash.com/photo-1666518533399-3f4f45bdb75c?w=1200&q=85",
+      "/images/cars/semi_exterior.png",
     ],
     about: "The Tesla Semi is a Class 8 electric truck designed for maximum safety, efficiency, and heavy-cargo hauling. Powered by three independent motors on the rear axles, it delivers the lowest energy cost per mile of any commercial truck.",
     features: [
@@ -166,16 +178,13 @@ const catalog: Record<string, {
     ],
   },
   "tesla-model-x-2": {
-    id: "tesla-model-x-2", name: "Tesla Model X",
+    id: "tesla-model-x-2", name: "Tesla Model X Plaid",
     subtitle: "Tesla Model X 2025 • Pearl White Multi-Coat • Automatic",
     type: "EV", stock: 6,
     range: "329 miles", speed: "149 mph", acceleration: "0-60 in 2.5s", hp: "1,020 hp",
     price: 87700, year: 2025, color: "Pearl White Multi-Coat", transmission: "Automatic",
     gallery: [
-      "https://teslacapx.com/dash/cars/8/69c3f2cabb77d.jpg",
-      "https://images.unsplash.com/photo-1536700503339-1e4b06520771?w=1200&q=85",
-      "https://images.unsplash.com/photo-1572635148818-ef6fd45eb394?w=1200&q=85",
-      "https://images.unsplash.com/photo-1561171200-99ef5b80b68c?w=1200&q=85",
+      "/images/cars/modelx_falcon_doors.png",
     ],
     about: "Tesla Model X has the highest power and fastest acceleration of any SUV, featuring iconic Falcon Wing doors and premium interior. Perfect for families who refuse to compromise on performance.",
     features: [
@@ -194,16 +203,39 @@ const catalog: Record<string, {
       { label: "Seats", value: "5–7" }, { label: "Drive", value: "Tri-Motor AWD" },
     ],
   },
+  "tesla-model-s-plaid": {
+    id: "tesla-model-s-plaid", name: "Tesla Model S Plaid",
+    subtitle: "Tesla Model S Plaid 2025 • Ultra Red • Automatic",
+    type: "EV", stock: 3,
+    range: "359 miles", speed: "200 mph", acceleration: "0-60 in 1.99s", hp: "1,020 hp",
+    price: 89990, year: 2025, color: "Ultra Red", transmission: "Automatic",
+    gallery: [
+      "/images/cars/models_exterior.png",
+    ],
+    about: "Model S Plaid has the quickest acceleration of any vehicle in production. Tri-motor all-wheel drive with carbon-sleeved rotors delivers 1,020 horsepower and a top speed of 200 mph.",
+    features: [
+      "1,020 hp Tri-Motor All-Wheel Drive",
+      "0-60 mph in 1.99 seconds",
+      "Carbon-Sleeved Rotor Motors",
+      "Yoke Steering Wheel Option",
+      "17\" Cinematic Display",
+      "22-Speaker Audio System",
+      "359 Miles Range",
+    ],
+    specs: [
+      { label: "Range", value: "359 miles" }, { label: "0–60 mph", value: "1.99 sec" },
+      { label: "Top Speed", value: "200 mph" }, { label: "Horsepower", value: "1,020 hp" },
+      { label: "Drive", value: "Tri-Motor AWD" }, { label: "Seats", value: "5" },
+    ],
+  },
   "tesla-optimus": {
-    id: "tesla-optimus", name: "Tesla Optimus",
+    id: "tesla-optimus", name: "Tesla Optimus Bot",
     subtitle: "Tesla Optimus Humanoid Robot 2025 • Matte Black & White",
     type: "Robot", stock: 3,
     range: "24h Battery", speed: "5 mph", acceleration: "N/A", hp: "N/A",
     price: 28998.98, year: 2025, color: "Matte Black & White", transmission: "Robotic Joint Actuators",
     gallery: [
-      "https://teslacapx.com/dash/cars/12/69c407f660122.webp",
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&q=85",
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=85",
+      "/images/cars/optimus_bot.png",
     ],
     about: "Optimus is a general-purpose, bi-pedal humanoid robot capable of performing tasks that are unsafe, repetitive, or boring. Designed for factory and home use, it leverages Tesla's FSD AI and computer vision from real-world Tesla fleet data.",
     features: [
@@ -219,7 +251,7 @@ const catalog: Record<string, {
     specs: [
       { label: "Battery Life", value: "24 hours" }, { label: "Walk Speed", value: "5 mph" },
       { label: "Hand DOF", value: "28" }, { label: "AI", value: "Tesla FSD" },
-      { label: "Height", value: "5\'8\"" }, { label: "Weight", value: "125 lbs" },
+      { label: "Height", value: "5'8\"" }, { label: "Weight", value: "125 lbs" },
     ],
   },
   "tesla-wall-connector": {
@@ -230,7 +262,6 @@ const catalog: Record<string, {
     price: 498.97, year: 2025, color: "Metallic Silver", transmission: "N/A",
     gallery: [
       "https://teslacapx.com/dash/cars/11/69c40685e0fac.jpg",
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85",
     ],
     about: "Wall Connector is Tesla's most convenient home charging solution for Tesla and non-Tesla electric vehicles. Wi-Fi connected for energy management and OTA updates. Ideal for residential and commercial installations.",
     features: [
@@ -257,7 +288,6 @@ const catalog: Record<string, {
     price: 11000, year: 2025, color: "Classic White", transmission: "N/A",
     gallery: [
       "https://teslacapx.com/dash/cars/10/69c404f5e8dc2.png",
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85",
     ],
     about: "Powerwall is an integrated battery system that stores solar energy for backup protection. It detects outages automatically and recharges with sunlight to keep your home powered 24/7 during grid outages.",
     features: [

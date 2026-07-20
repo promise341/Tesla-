@@ -23,15 +23,17 @@ export default function CarsInventory() {
   const [selectedType, setSelectedType] = useState("All");
 
   const vehicles: Vehicle[] = [
-    { id: "tesla-semi", name: "Tesla Semi", type: "EV", range: "500 miles", speed: "105 mph", acceleration: "15s (0-60)", price: 28500.02, featured: true, img: "https://teslacapx.com/dash/cars/13/69c40a3f6c962.jpg" },
-    { id: "cyber-truck", name: "Cyber Truck", type: "EV", range: "320 miles", speed: "130 mph", acceleration: "2.6s (0-60)", price: 91500.00, featured: true, img: "https://teslacapx.com/dash/cars/5/69c2a1cf16d3c.jpeg" },
-    { id: "tesla-optimus", name: "Tesla Optimus", type: "Robot", range: "24h Battery", speed: "5 mph", price: 28998.98, featured: false, img: "https://teslacapx.com/dash/cars/12/69c407f660122.webp" },
+    { id: "cyber-truck", name: "Cyber Truck", type: "EV", range: "320 miles", speed: "130 mph", acceleration: "2.6s (0-60)", price: 91500.00, featured: true, img: "/images/cars/cybertruck_exterior.png" },
+    { id: "cybercab", name: "Tesla Cybercab", type: "EV", range: "300 miles", speed: "110 mph", acceleration: "4.0s (0-60)", price: 29990.00, featured: true, img: "/images/cars/cybercab_exterior.png" },
+    { id: "tesla-semi", name: "Tesla Semi", type: "EV", range: "500 miles", speed: "105 mph", acceleration: "15s (0-60)", price: 28500.02, featured: true, img: "/images/cars/semi_exterior.png" },
+    { id: "tesla-roadster", name: "Tesla Roadster", type: "EV", range: "620 miles", speed: "250 mph", acceleration: "1.9s (0-60)", price: 199499.96, featured: true, img: "/images/cars/roadster_exterior.png" },
+    { id: "tesla-model-x-2", name: "Tesla Model X Plaid", type: "EV", range: "329 miles", speed: "149 mph", acceleration: "2.5s (0-60)", price: 87700.00, featured: false, img: "/images/cars/modelx_falcon_doors.png" },
+    { id: "tesla-model-y", name: "Tesla Model Y Performance", type: "EV", range: "337 miles", speed: "155 mph", acceleration: "3.5s (0-60)", price: 43489.96, featured: false, img: "/images/cars/modely_exterior.png" },
+    { id: "tesla-model-3-long-range-1", name: "Tesla Model 3 Long Range", type: "EV", range: "363 miles", speed: "140 mph", acceleration: "4.2s (0-60)", price: 42490.00, featured: false, img: "/images/cars/model3_exterior.png" },
+    { id: "tesla-model-s-plaid", name: "Tesla Model S Plaid", type: "EV", range: "359 miles", speed: "200 mph", acceleration: "1.99s (0-60)", price: 89990.00, featured: false, img: "/images/cars/models_exterior.png" },
+    { id: "tesla-optimus", name: "Tesla Optimus Bot", type: "Robot", range: "24h Battery", speed: "5 mph", price: 28998.98, featured: false, img: "/images/cars/optimus_bot.png" },
     { id: "tesla-wall-connector", name: "Tesla Wall Connector", type: "Charger", range: "N/A", speed: "44 mi/hr charge", price: 498.97, featured: false, img: "https://teslacapx.com/dash/cars/11/69c40685e0fac.jpg" },
-    { id: "tesla-powerwall", name: "Tesla Powerwall", type: "Battery", range: "13.5 kWh capacity", speed: "N/A", price: 11000.00, featured: false, img: "https://teslacapx.com/dash/cars/10/69c404f5e8dc2.png" },
-    { id: "tesla-model-x-2", name: "Tesla Model X", type: "EV", range: "329 miles", speed: "149 mph", acceleration: "2.5s (0-60)", price: 87700.00, featured: false, img: "https://teslacapx.com/dash/cars/8/69c3f2cabb77d.jpg" },
-    { id: "tesla-roadster", name: "Tesla Roadster", type: "EV", range: "620 miles", speed: "250 mph", acceleration: "1.9s (0-60)", price: 199499.96, featured: false, img: "https://teslacapx.com/dash/cars/7/69c3ee94623a4.webp" },
-    { id: "tesla-model-y", name: "Tesla Model Y", type: "EV", range: "337 miles", speed: "250 km/h", acceleration: "3.5s (0-60)", price: 43489.96, featured: false, img: "https://teslacapx.com/dash/cars/6/69c2cf1617bff.png" },
-    { id: "tesla-model-3-long-range-1", name: "Tesla Model 3 Long Range", type: "EV", range: "363 miles", speed: "225 km/h (140 mph)", acceleration: "4.2s (0-60)", price: 42490.00, featured: false, img: "https://teslacapx.com/dash/cars/4/69c29f1b7979e.jpg" }
+    { id: "tesla-powerwall", name: "Tesla Powerwall", type: "Battery", range: "13.5 kWh capacity", speed: "N/A", price: 11000.00, featured: false, img: "https://teslacapx.com/dash/cars/10/69c404f5e8dc2.png" }
   ];
 
   const filteredVehicles = vehicles.filter((car) => {

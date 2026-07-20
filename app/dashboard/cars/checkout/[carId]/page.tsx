@@ -8,15 +8,17 @@ import {
 } from "lucide-react";
 
 const CARS_CATALOG: Record<string, { name: string; price: number; img: string; subtitle: string }> = {
-  "cyber-truck":                { name: "Cyber Truck",              price: 91500.00,   img: "https://teslacapx.com/dash/cars/5/69c2a1cf16d3c.jpeg",  subtitle: "2025 • Metallic Silver • Automatic" },
-  "tesla-model-3-long-range-1": { name: "Tesla Model 3 Long Range", price: 42490.00,   img: "https://teslacapx.com/dash/cars/4/69c29f1b7979e.jpg",   subtitle: "2025 • Deep Blue • Automatic" },
-  "tesla-model-y":              { name: "Tesla Model Y",            price: 43489.96,   img: "https://teslacapx.com/dash/cars/6/69c2cf1617bff.png",   subtitle: "2025 • Solid Black • Automatic" },
-  "tesla-roadster":             { name: "Tesla Roadster",           price: 199499.96,  img: "https://teslacapx.com/dash/cars/7/69c3ee94623a4.webp",  subtitle: "2026 • Roadster Red • Automatic" },
-  "tesla-model-x-2":            { name: "Tesla Model X",            price: 87700.00,   img: "https://teslacapx.com/dash/cars/8/69c3f2cabb77d.jpg",   subtitle: "2025 • Pearl White • Automatic" },
+  "cyber-truck":                { name: "Cyber Truck",              price: 91500.00,   img: "/images/cars/cybertruck_exterior.png",  subtitle: "2025 • Stainless Steel • Tri-Motor AWD" },
+  "cybercab":                   { name: "Tesla Cybercab",           price: 29990.00,   img: "/images/cars/cybercab_exterior.png",    subtitle: "2026 • Brushed Gold/Silver • Robotaxi" },
+  "tesla-model-3-long-range-1": { name: "Tesla Model 3 Long Range", price: 42490.00,   img: "/images/cars/model3_exterior.png",       subtitle: "2025 • Deep Blue • Dual Motor AWD" },
+  "tesla-model-y":              { name: "Tesla Model Y Performance",price: 43489.96,   img: "/images/cars/modely_exterior.png",       subtitle: "2025 • Solid Black • Dual Motor AWD" },
+  "tesla-roadster":             { name: "Tesla Roadster Supercar",  price: 199499.96,  img: "/images/cars/roadster_exterior.png",     subtitle: "2026 • Roadster Red • SpaceX Package" },
+  "tesla-model-x-2":            { name: "Tesla Model X Plaid",       price: 87700.00,   img: "/images/cars/modelx_falcon_doors.png",   subtitle: "2025 • Pearl White • Falcon Wing Doors" },
+  "tesla-model-s-plaid":        { name: "Tesla Model S Plaid",       price: 89990.00,   img: "/images/cars/models_exterior.png",       subtitle: "2025 • Ultra Red • 1,020 hp Plaid" },
+  "tesla-optimus":              { name: "Tesla Optimus Bot",        price: 28998.98,   img: "/images/cars/optimus_bot.png",          subtitle: "2025 • Matte Black & White • Humanoid AI" },
+  "tesla-semi":                 { name: "Tesla Semi Truck",         price: 28500.02,   img: "/images/cars/semi_exterior.png",         subtitle: "2026 • Arctic White • Class 8 Electric" },
   "tesla-powerwall":            { name: "Tesla Powerwall",          price: 11000.00,   img: "https://teslacapx.com/dash/cars/10/69c404f5e8dc2.png",  subtitle: "2025 • Classic White" },
   "tesla-wall-connector":       { name: "Tesla Wall Connector",     price: 498.97,     img: "https://teslacapx.com/dash/cars/11/69c40685e0fac.jpg",  subtitle: "2025 • Metallic Silver" },
-  "tesla-optimus":              { name: "Tesla Optimus",            price: 28998.98,   img: "https://teslacapx.com/dash/cars/12/69c407f660122.webp", subtitle: "2025 • Matte Black & White" },
-  "tesla-semi":                 { name: "Tesla Semi",               price: 28500.02,   img: "https://teslacapx.com/dash/cars/13/69c40a3f6c962.jpg",  subtitle: "2026 • Arctic White • Automatic" },
 };
 
 const CRYPTO_METHODS = [

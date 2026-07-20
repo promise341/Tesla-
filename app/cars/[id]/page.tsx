@@ -37,7 +37,7 @@ export default function CarDetailPage() {
       year: 2025,
       color: "Metallic Silver",
       transmission: "Automatic",
-      img: "https://teslacapx.com/dash/cars/5/69c2a1cf16d3c.jpeg",
+      img: "/images/cars/cybertruck_exterior.png",
       about: `🚛 OVERVIEW
 The Tesla Cybertruck represents a revolutionary approach to electric pickup trucks, combining ultra-hard 30X cold-rolled stainless steel exoskeleton with all-electric performance. The Cyberbeast variant delivers 845 horsepower from its tri-motor powertrain, accelerating 0-60 mph in just 2.6 seconds while maintaining an 11,000 lbs towing capacity.
 
@@ -105,7 +105,7 @@ The Tesla Cybertruck represents a revolutionary approach to electric pickup truc
       year: 2025,
       color: "Deep Blue Metallic",
       transmission: "Automatic",
-      img: "https://teslacapx.com/dash/cars/4/69c29f1b7979e.jpg",
+      img: "/images/cars/model3_exterior.png",
       about: `🚗 OVERVIEW
 The Tesla Model 3 Long Range represents the perfect balance of performance, efficiency, and technology in an all-electric sedan. As Tesla's most affordable and popular vehicle, the Model 3 has revolutionized the electric vehicle market with its combination of 363-mile EPA estimated range, dual motor all-wheel drive, and advanced autopilot capabilities.
 
@@ -176,7 +176,7 @@ The Tesla Model 3 Long Range represents the perfect balance of performance, effi
       year: 2025,
       color: "Solid Black",
       transmission: "Automatic",
-      img: "https://teslacapx.com/dash/cars/6/69c2cf1617bff.png",
+      img: "/images/cars/modely_exterior.png",
       about: `🚙 OVERVIEW
 The Tesla Model Y is a mid-size all-electric crossover SUV that combines the versatility of an SUV with the performance and efficiency of a Tesla sedan. With 456 horsepower, 0-60 mph in 3.5 seconds, and 76 cubic feet of cargo space, the Model Y is perfect for families who refuse to compromise between practicality and performance.
 
@@ -253,7 +253,7 @@ The Tesla Model Y is a mid-size all-electric crossover SUV that combines the ver
       year: 2025,
       color: "Roadster Red",
       transmission: "Automatic",
-      img: "https://teslacapx.com/dash/cars/7/69c3ee94623a4.webp",
+      img: "/images/cars/roadster_exterior.png",
       about: `🏎️ OVERVIEW
 The Tesla Roadster is the ultimate electric hypercar with record-breaking 0-60 mph in 1.9 seconds, over 250 mph top speed, and unprecedented 620 miles range. With 1,200+ horsepower tri-motor powertrain and optional SpaceX Package cold gas thrusters.
 
@@ -298,7 +298,7 @@ The Tesla Roadster is the ultimate electric hypercar with record-breaking 0-60 m
       year: 2025,
       color: "Pearl White Multi-Coat",
       transmission: "Automatic",
-      img: "https://teslacapx.com/dash/cars/8/69c3f2cabb77d.jpg",
+      img: "/images/cars/modelx_falcon_doors.png",
       about: `🚐 OVERVIEW
 The Tesla Model X Plaid is the world's fastest SUV with 1,020 horsepower and 0-60 mph in 2.5 seconds. Famous for Falcon Wing doors that open vertically in tight spaces. Seats 7 adults with 88 cubic feet of cargo.
 
@@ -380,7 +380,7 @@ The Tesla Model X Plaid is the world's fastest SUV with 1,020 horsepower and 0-6
       year: 2025,
       color: "Matte Black & White",
       transmission: "Robotic Joint Actuators",
-      img: "https://teslacapx.com/dash/cars/12/69c407f660122.webp",
+      img: "/images/cars/optimus_bot.png",
       about: "Optimus is a general-purpose, bi-pedal humanoid robot capable of performing tasks that are unsafe, repetitive, or boring. Designed to assist factories and home assistants, leveraging Tesla's AI and computer vision technologies."
     },
     "tesla-semi": {
@@ -395,8 +395,38 @@ The Tesla Model X Plaid is the world's fastest SUV with 1,020 horsepower and 0-6
       year: 2025,
       color: "Arctic White",
       transmission: "Automatic",
-      img: "https://teslacapx.com/dash/cars/13/69c40a3f6c962.jpg",
+      img: "/images/cars/semi_exterior.png",
       about: "The Tesla Semi is a Class 8 electric truck designed for maximum safety, efficiency, and heavy-cargo hauling power. Powered by three independent motors on rear axles providing incredible power and acceleration."
+    },
+    "cybercab": {
+      id: "cybercab",
+      name: "Tesla Cybercab",
+      subtitle: "Tesla Cybercab Autonomous Robotaxi 2026 • Brushed Gold/Silver",
+      range: "300 miles Range",
+      speed: "110 mph Top Speed",
+      acceleration: "0-60 in 4.0s",
+      hp: "350 hp",
+      price: 29990.00,
+      year: 2026,
+      color: "Brushed Gold/Silver",
+      transmission: "Autonomous Drive System",
+      img: "/images/cars/cybercab_exterior.png",
+      about: "The Tesla Cybercab is an autonomous, fully self-driving robotaxi built without a steering wheel or pedals. Designed for premium passenger transportation with wireless inductive charging and vertical butterfly doors."
+    },
+    "tesla-model-s-plaid": {
+      id: "tesla-model-s-plaid",
+      name: "Tesla Model S Plaid",
+      subtitle: "Tesla Model S Plaid 2025 • Ultra Red",
+      range: "359 miles Range",
+      speed: "200 mph Top Speed",
+      acceleration: "0-60 in 1.99s",
+      hp: "1,020 hp",
+      price: 89990.00,
+      year: 2025,
+      color: "Ultra Red",
+      transmission: "Automatic",
+      img: "/images/cars/models_exterior.png",
+      about: "Model S Plaid has the quickest acceleration of any vehicle in production. Tri-motor all-wheel drive with carbon-sleeved rotors delivers 1,020 horsepower and a top speed of 200 mph."
     }
   };
 
