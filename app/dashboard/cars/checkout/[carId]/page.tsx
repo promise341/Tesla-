@@ -25,6 +25,7 @@ const CRYPTO_METHODS = [
   { id: "USDT",   name: "USDT (TRC20)", address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u" },
   { id: "BNB",    name: "BNB (BSC)", address: process.env.NEXT_PUBLIC_BNB_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17" },
   { id: "XRP",    name: "XRP",      address: process.env.NEXT_PUBLIC_XRP_WALLET || "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3" },
+  { id: "DOGE",   name: "Dogecoin", address: process.env.NEXT_PUBLIC_DOGE_WALLET || "D7vAQaDTQG9U5nvV7JZwNJHoTEQLp8TPVu" },
   { id: "SOLANA", name: "Solana",   address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg" },
 ];
 

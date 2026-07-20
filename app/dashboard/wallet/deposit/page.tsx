@@ -47,6 +47,13 @@ const CRYPTO_WALLETS = {
     icon: "✕",
     color: "bg-cyan-500"
   },
+  DOGE: {
+    address: process.env.NEXT_PUBLIC_DOGE_WALLET || "D7vAQaDTQG9U5nvV7JZwNJHoTEQLp8TPVu",
+    name: "Dogecoin",
+    network: "Dogecoin Network",
+    icon: "Ð",
+    color: "bg-amber-500"
+  },
   SOLANA: {
     address: process.env.NEXT_PUBLIC_SOLANA_WALLET || "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg",
     name: "Solana",

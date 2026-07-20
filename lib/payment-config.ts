@@ -10,6 +10,7 @@ export const PAYMENT_WALLETS = {
   USDT_TRC20: "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
   BNB_BSC: "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
   XRP: "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3",
+  DOGE: "D7vAQaDTQG9U5nvV7JZwNJHoTEQLp8TPVu",
   SOLANA: "CpHS2AK9uLyeHNvTFmDUcnPxpNvHUnfCZ9m4P7Mqw8Sg",
 } as const;
 
@@ -53,6 +54,14 @@ export const PAYMENT_METHODS = [
     desc: "Cryptocurrency Payment",
     address: PAYMENT_WALLETS.XRP,
     network: "XRP Network",
+  },
+  {
+    id: "DOGE",
+    name: "Dogecoin",
+    fullName: "Dogecoin (DOGE)",
+    desc: "Cryptocurrency Payment",
+    address: PAYMENT_WALLETS.DOGE,
+    network: "Dogecoin Network",
   },
   {
     id: "SOLANA",
