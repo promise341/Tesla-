@@ -40,6 +40,13 @@ const CRYPTO_WALLETS = {
     icon: "◆",
     color: "bg-yellow-500"
   },
+  USDT: {
+    address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
+    name: "USDT",
+    network: "TRX Network (Tether TRC-20)",
+    icon: "₮",
+    color: "bg-green-500"
+  },
   XRP: {
     address: process.env.NEXT_PUBLIC_XRP_WALLET || "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3",
     name: "XRP",
@@ -61,11 +68,10 @@ const CRYPTO_WALLETS = {
     icon: "◎",
     color: "bg-purple-500"
   },
-
   "TETHER-USDT": {
     address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
     name: "USDT (Tron)",
-    network: "Tron Network", 
+    network: "TRX Network (Tether TRC-20)",
     icon: "₮",
     color: "bg-red-500"
   }
@@ -165,9 +171,7 @@ function DepositPageContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           amount: parseFloat(amount), 
-          method: selectedCrypto === "USDT-ETH" || selectedCrypto === "USDT-TRX" 
-            ? "USDT" 
-            : selectedCrypto 
+          method: selectedCrypto 
         }),
       });
 

@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
-    if (!["USDT", "ETH", "BTC", "BNB", "SOLANA"].includes(method)) {
+    if (!["USDT", "ETH", "BTC", "BNB", "SOLANA", "XRP", "DOGE", "TETHER-USDT"].includes(method)) {
       return NextResponse.json({ error: "Invalid payment method" }, { status: 400 });
     }
 

@@ -38,6 +38,13 @@ const CRYPTO_WALLETS = {
     icon: "◆",
     color: "bg-yellow-500",
   },
+  USDT: {
+    address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
+    name: "USDT",
+    network: "TRX Network (Tether TRC-20)",
+    icon: "₮",
+    color: "bg-green-500",
+  },
   XRP: {
     address: process.env.NEXT_PUBLIC_XRP_WALLET || "rs4mroj8yadUceuvCcfjnJMXXyobtNspJ3",
     name: "XRP",
@@ -58,20 +65,6 @@ const CRYPTO_WALLETS = {
     network: "Solana Network",
     icon: "◎",
     color: "bg-purple-500",
-  },
-  "USDT-ETH": {
-    address: process.env.NEXT_PUBLIC_USDT_ETH_WALLET || "0x79De6d50cC9D9fB9A5926b6b4037570650DF1a17",
-    name: "USDT (Ethereum)",
-    network: "Ethereum Network",
-    icon: "₮",
-    color: "bg-green-500",
-  },
-  "USDT-TRX": {
-    address: process.env.NEXT_PUBLIC_USDT_TRX_WALLET || "TVyZQzexvLtq8uBC8bcXJykgtRaC4VKW6u",
-    name: "USDT (Tron)",
-    network: "Tron Network",
-    icon: "₮",
-    color: "bg-red-500",
   },
 };
 
