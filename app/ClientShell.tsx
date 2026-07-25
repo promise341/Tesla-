@@ -47,6 +47,16 @@ export default function ClientShell({ children }: { children: React.ReactNode })
       .catch(() => setLoggedIn(false));
   }, [pathname]);
 
+  useEffect(() => {
+    if (loggedIn) {
+      fetch("/api/user/ping", { method: "POST" }).catch(() => {});
+      const interval = setInterval(() => {
+        fetch("/api/user/ping", { method: "POST" }).catch(() => {});
+      }, 60000); // every minute
+      return () => clearInterval(interval);
+    }
+  }, [loggedIn]);
+
   async function handleSignIn() {
     try {
       if (loggedIn) {
@@ -271,7 +281,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
             <div>
               <h4 className="text-white font-semibold text-sm mb-4">Regulatory Notice</h4>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Financial trading involves risk. All plans provided on this portal are models. Teslaxipo is an independent trading company operating in the UK.
+                Financial trading involves risk. All plans provided on this portal are models. Teslaxipo is an independent trading company operating in the United States.
               </p>
             </div>
           </div>
