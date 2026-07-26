@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
@@ -27,7 +27,6 @@ model User {
   kycSubmittedAt    DateTime?
   role              String           @default("USER")
   createdAt         DateTime         @default(now())
-  lastActiveAt      DateTime         @default(now())
   activePlans       ActivePlan[]
   depositAddresses  DepositAddress[]
   giveawayEntries   GiveawayEntry[]

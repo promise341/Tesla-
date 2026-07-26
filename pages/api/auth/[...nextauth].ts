@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: { strategy: "jwt" },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "tesla-capx-nextauth-secret-key-2024",
   pages: {
     signIn: "/login",
   },

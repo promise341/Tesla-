@@ -30,7 +30,6 @@ interface AdminUser {
   phone: string;
   country: string;
   createdAt: string;
-  lastActiveAt?: string;
   role: string;
   isActive: boolean;
   kycStatus: string;
@@ -230,11 +229,8 @@ export default function UserManagementPage() {
                 <div className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
                   {/* Avatar + Name */}
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-red-700 to-red-950 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-700 to-red-950 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                       {(user.name || user.email)[0].toUpperCase()}
-                      {user.lastActiveAt && (new Date().getTime() - new Date(user.lastActiveAt).getTime()) < 300000 && (
-                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#111] rounded-full"></span>
-                      )}
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-white truncate">{user.name}</p>
@@ -309,15 +305,7 @@ export default function UserManagementPage() {
                             </div>
                           )}
                           <div className="text-gray-500">
-                            Joined: <span className="text-gray-300">{new Date(user.createdAt).toLocaleString()}</span>
-                          </div>
-                          <div className="text-gray-500 flex items-center gap-1.5">
-                            Status: 
-                            {user.lastActiveAt && (new Date().getTime() - new Date(user.lastActiveAt).getTime()) < 300000 ? (
-                              <span className="text-green-400 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Online</span>
-                            ) : (
-                              <span className="text-gray-400">Offline (Last seen: {user.lastActiveAt ? new Date(user.lastActiveAt).toLocaleString() : 'Unknown'})</span>
-                            )}
+                            Joined: {new Date(user.createdAt).toLocaleDateString()}
                           </div>
                           <div className="text-gray-500">
                             Transactions: {user.transactionCount}

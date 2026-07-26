@@ -47,16 +47,6 @@ export default function ClientShell({ children }: { children: React.ReactNode })
       .catch(() => setLoggedIn(false));
   }, [pathname]);
 
-  useEffect(() => {
-    if (loggedIn) {
-      fetch("/api/user/ping", { method: "POST" }).catch(() => {});
-      const interval = setInterval(() => {
-        fetch("/api/user/ping", { method: "POST" }).catch(() => {});
-      }, 60000); // every minute
-      return () => clearInterval(interval);
-    }
-  }, [loggedIn]);
-
   async function handleSignIn() {
     try {
       if (loggedIn) {
