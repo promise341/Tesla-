@@ -181,3 +181,40 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: "Failed to update balance" }, { status: 500 });
   }
 }
+
+// DELETE — delete user completely
+export async function DELETE(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await checkAdmin(session.user.email))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json({ error: "userId parameter required" }, { status: 400 });
+    }
+
+    // Delete user related records in order
+    await prisma.$transaction([
+      prisma.transaction.deleteMany({ where: { userId } }),
+      prisma.activePlan.deleteMany({ where: { userId } }),
+      prisma.order.deleteMany({ where: { userId } }),
+      prisma.trade.deleteMany({ where: { userId } }),
+      prisma.notification.deleteMany({ where: { userId } }),
+      prisma.depositAddress.deleteMany({ where: { userId } }),
+      prisma.vipMembership.deleteMany({ where: { userId } }),
+      prisma.giveawayEntry.deleteMany({ where: { userId } }),
+      prisma.referral.deleteMany({
+        where: { OR: [{ referrerId: userId }, { refereeId: userId }] },
+      }),
+      prisma.user.delete({ where: { id: userId } }),
+    ]);
+
+    return NextResponse.json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
+  }
+}
