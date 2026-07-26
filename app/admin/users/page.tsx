@@ -5,7 +5,7 @@ import {
   Users, Search, Shield, DollarSign, Wallet, Copy,
   CheckCircle, XCircle, ChevronDown, ChevronUp,
   CreditCard, X, Plus, Minus, Bell, RefreshCw,
-  Eye, TrendingUp, Globe, Phone
+  Eye, TrendingUp, Globe, Phone, Trash2
 } from "lucide-react";
 
 interface DepositAddress { currency: string; address: string; createdAt: string; }
@@ -116,6 +116,27 @@ export default function UserManagementPage() {
       } else addToast("Failed to update role", "error");
     } catch { addToast("Network error", "error"); }
   };
+
+  const deleteUser = async (user: AdminUser) => {
+    if (!confirm(`Are you sure you want to PERMANENTLY DELETE user "${user.name}" (${user.email})? This action cannot be undone.`)) {
+      return;
+    }
+    try {
+      const res = await fetch(`/api/admin/users?userId=${user.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        addToast(`User ${user.email} deleted successfully`, "success");
+        fetchUsers();
+      } else {
+        const data = await res.json();
+        addToast(data.error || "Failed to delete user", "error");
+      }
+    } catch {
+      addToast("Network error deleting user", "error");
+    }
+  };
+
 
   const handleCredit = async () => {
     if (!creditModal) return;
@@ -275,6 +296,11 @@ export default function UserManagementPage() {
                       className={`p-2 rounded-lg border transition-colors ${user.isActive ? "bg-orange-950/40 border-orange-800/30 text-orange-400 hover:bg-orange-900/40" : "bg-green-950/40 border-green-800/30 text-green-400 hover:bg-green-900/40"}`}
                       title={user.isActive ? "Suspend User" : "Activate User"}>
                       {user.isActive ? <XCircle size={14} /> : <CheckCircle size={14} />}
+                    </button>
+                    <button onClick={() => deleteUser(user)}
+                      className="p-2 rounded-lg bg-red-950/40 border border-red-800/30 text-red-400 hover:bg-red-900/40 transition-colors"
+                      title="Delete User Permanently">
+                      <Trash2 size={14} />
                     </button>
                     <button onClick={() => setExpandedId(expanded ? null : user.id)}
                       className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-colors">
