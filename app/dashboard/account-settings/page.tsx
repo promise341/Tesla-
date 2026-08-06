@@ -92,6 +92,8 @@ interface UserProfile {
   country: string;
   avatar?: string | null;
   createdAt: string;
+  isVerified?: boolean;
+  verifiedAt?: string | null;
 }
 
 interface ActivityItem {
@@ -362,7 +364,15 @@ export default function AccountSettingsPage() {
             />
           </div>
 
-          <h2 className="text-xl font-extrabold text-white">{profile?.name}</h2>
+          <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
+            {profile?.name}
+            {profile?.isVerified && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500/20 border border-blue-400/30 rounded-full text-[10px] font-bold text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+                VERIFIED
+              </span>
+            )}
+          </h2>
           <p className="text-white/70 text-sm mt-0.5">{profile?.email}</p>
           <p className="text-white/50 text-xs mt-2">Click the camera icon to change your photo</p>
         </div>

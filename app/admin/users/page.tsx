@@ -5,7 +5,7 @@ import {
   Users, Search, Shield, DollarSign, Wallet, Copy,
   CheckCircle, XCircle, ChevronDown, ChevronUp,
   CreditCard, X, Plus, Minus, Bell, RefreshCw,
-  Eye, TrendingUp, Globe, Phone, Trash2
+  Eye, TrendingUp, Globe, Phone, Trash2, BadgeCheck
 } from "lucide-react";
 
 interface DepositAddress { currency: string; address: string; createdAt: string; }
@@ -33,6 +33,8 @@ interface AdminUser {
   role: string;
   isActive: boolean;
   kycStatus: string;
+  isVerified: boolean;
+  verifiedAt: string | null;
   totalBalance: number;
   totalProfit: number;
   totalDeposits: number;
@@ -134,6 +136,26 @@ export default function UserManagementPage() {
       }
     } catch {
       addToast("Network error deleting user", "error");
+    }
+  };
+
+  const toggleVerification = async (user: AdminUser) => {
+    const newStatus = !user.isVerified;
+    try {
+      const res = await fetch("/api/admin/users/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, isVerified: newStatus }),
+      });
+      if (res.ok) {
+        addToast(`${user.name} ${newStatus ? "verified" : "unverified"} successfully`, "success");
+        fetchUsers();
+      } else {
+        const data = await res.json();
+        addToast(data.error || "Failed to update verification", "error");
+      }
+    } catch {
+      addToast("Network error", "error");
     }
   };
 
@@ -284,10 +306,24 @@ export default function UserManagementPage() {
                     <span className={`text-[10px] font-semibold px-2 py-1 rounded-full border ${kycColor(user.kycStatus)}`}>
                       KYC: {user.kycStatus.toUpperCase()}
                     </span>
+                    {user.isVerified && (
+                      <span className="text-[10px] font-semibold px-2 py-1 rounded-full border bg-blue-950/40 border-blue-800/40 text-blue-400 flex items-center gap-1">
+                        <BadgeCheck size={10} /> VERIFIED
+                      </span>
+                    )}
                   </div>
 
                   {/* Actions */}
                   <div className="flex items-center gap-2">
+                    <button onClick={() => toggleVerification(user)}
+                      className={`p-2 rounded-lg border transition-colors ${
+                        user.isVerified 
+                          ? "bg-orange-950/40 border-orange-800/30 text-orange-400 hover:bg-orange-900/40" 
+                          : "bg-blue-950/40 border-blue-800/30 text-blue-400 hover:bg-blue-900/40"
+                      }`}
+                      title={user.isVerified ? "Unverify User" : "Verify User"}>
+                      <BadgeCheck size={14} />
+                    </button>
                     <button onClick={() => setCreditModal({ user })}
                       className="p-2 rounded-lg bg-green-950/40 border border-green-800/30 text-green-400 hover:bg-green-900/40 transition-colors" title="Credit/Debit Balance">
                       <DollarSign size={14} />
@@ -339,6 +375,12 @@ export default function UserManagementPage() {
                           <div className="flex items-center gap-2 text-gray-500">
                             Profit: <span className="text-green-400">${user.totalProfit.toFixed(2)}</span>
                           </div>
+                          {user.isVerified && (
+                            <div className="flex items-center gap-2 text-blue-400 text-xs">
+                              <BadgeCheck size={12} />
+                              Verified {user.verifiedAt ? `on ${new Date(user.verifiedAt).toLocaleDateString()}` : ''}
+                            </div>
+                          )}
                         </div>
 
                         {/* Role Change */}

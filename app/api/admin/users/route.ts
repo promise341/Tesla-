@@ -34,6 +34,8 @@ export async function GET(request: NextRequest) {
         totalWithdraw: true,
         kycStatus: true,
         role: true,
+        isVerified: true,
+        verifiedAt: true,
         depositAddresses: {
           select: { currency: true, address: true, createdAt: true },
           orderBy: { createdAt: "desc" },
@@ -87,6 +89,8 @@ export async function GET(request: NextRequest) {
         role: user.role,
         isActive: user.role !== "SUSPENDED",
         kycStatus: user.kycStatus?.toLowerCase() || "unverified",
+        isVerified: user.isVerified || false,
+        verifiedAt: user.verifiedAt,
         totalBalance: user.balance || 0,
         totalProfit: user.totalProfit || 0,
         totalDeposits: deposits.reduce((s, t) => s + t.amount, 0),

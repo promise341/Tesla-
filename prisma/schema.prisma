@@ -27,6 +27,8 @@ model User {
   kycSubmittedAt    DateTime?
   role              String           @default("USER")
   isSuperAdmin      Boolean          @default(false)
+  isVerified        Boolean          @default(false)
+  verifiedAt        DateTime?
   createdAt         DateTime         @default(now())
   activePlans       ActivePlan[]
   depositAddresses  DepositAddress[]
