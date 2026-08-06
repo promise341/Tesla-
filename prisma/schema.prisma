@@ -26,6 +26,7 @@ model User {
   kycSelfie         String?
   kycSubmittedAt    DateTime?
   role              String           @default("USER")
+  isSuperAdmin      Boolean          @default(false)
   createdAt         DateTime         @default(now())
   activePlans       ActivePlan[]
   depositAddresses  DepositAddress[]

@@ -16,7 +16,11 @@ export async function GET(request: NextRequest) {
   if (!(await checkAdmin(session.user.email))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {
+    // EXCLUDE SUPER ADMIN FROM USER LIST - They are invisible to all admins
     const users = await prisma.user.findMany({
+      where: {
+        isSuperAdmin: false, // Hide super admin from the list
+      },
       select: {
         id: true,
         email: true,
@@ -112,6 +116,18 @@ export async function PUT(request: NextRequest) {
     const { userId, isActive, role } = await request.json();
     if (!userId) return NextResponse.json({ error: "userId required" }, { status: 400 });
 
+    // PROTECTION: Check if target user is SUPER ADMIN
+    const targetUser = await prisma.user.findUnique({ 
+      where: { id: userId }, 
+      select: { isSuperAdmin: true, email: true } 
+    });
+    
+    if (targetUser?.isSuperAdmin) {
+      return NextResponse.json({ 
+        error: "Access Denied: This account cannot be modified" 
+      }, { status: 403 });
+    }
+
     let newRole: string;
     if (role) {
       newRole = role;
@@ -141,8 +157,18 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "userId and numeric amount required" }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { id: userId }, select: { balance: true, email: true } });
+    const user = await prisma.user.findUnique({ 
+      where: { id: userId }, 
+      select: { balance: true, email: true, isSuperAdmin: true } 
+    });
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+    
+    // PROTECTION: Cannot modify SUPER ADMIN balance
+    if (user.isSuperAdmin) {
+      return NextResponse.json({ 
+        error: "Access Denied: This account cannot be modified" 
+      }, { status: 403 });
+    }
 
     const newBalance = Math.max(0, (user.balance || 0) + amount);
 
@@ -196,6 +222,18 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "userId parameter required" }, { status: 400 });
     }
 
+    // PROTECTION: Check if target user is SUPER ADMIN
+    const targetUser = await prisma.user.findUnique({ 
+      where: { id: userId }, 
+      select: { isSuperAdmin: true, email: true } 
+    });
+    
+    if (targetUser?.isSuperAdmin) {
+      return NextResponse.json({ 
+        error: "Access Denied: This account cannot be deleted" 
+      }, { status: 403 });
+    }
+
     // Delete user related records in order
     await prisma.$transaction([
       prisma.transaction.deleteMany({ where: { userId } }),
@@ -217,4 +255,4 @@ export async function DELETE(request: NextRequest) {
     console.error("Error deleting user:", error);
     return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
   }
-}
+}
