@@ -25,6 +25,8 @@ export async function GET() {
       avatar: true,
       role: true,
       kycStatus: true,
+      isVerified: true,
+      verifiedAt: true,
       createdAt: true,
     },
   });

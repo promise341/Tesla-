@@ -1,0 +1,56 @@
+═══════════════════════════════════════════════════════════
+   ✅ USER VERIFICATION SYSTEM - SETUP
+═══════════════════════════════════════════════════════════
+
+WHAT WAS ADDED:
+
+✅ Admin can verify/unverify users
+✅ Verified badge shows on user profile
+✅ Verified status shows in admin panel
+✅ Users get notification when verified
+
+═══════════════════════════════════════════════════════════
+
+📋 SETUP ON PRODUCTION (VERCEL):
+
+STEP 1: Update Database Schema
+───────────────────────────────────────────────────────────
+
+Go to Vercel → Storage → Your Postgres Database → Query
+
+Run these 2 commands (ONE AT A TIME):
+
+1. Add isVerified field:
+   ALTER TABLE "User" ADD COLUMN "isVerified" BOOLEAN NOT NULL DEFAULT false;
+
+2. Add verifiedAt field:
+   ALTER TABLE "User" ADD COLUMN "verifiedAt" TIMESTAMP;
+
+───────────────────────────────────────────────────────────
+
+✅ THAT'S IT! Vercel will auto-deploy the code.
+
+═══════════════════════════════════════════════════════════
+
+🎯 HOW TO USE:
+
+1. Login as admin
+2. Go to /admin/users
+3. Click the blue badge icon to verify a user
+4. User will see "VERIFIED" badge on their profile
+5. Click again to unverify
+
+═══════════════════════════════════════════════════════════
+
+📸 WHAT IT LOOKS LIKE:
+
+Admin Panel:
+- Blue badge icon button (BadgeCheck)
+- Shows "VERIFIED" badge on verified users
+- Shows verification date in expanded view
+
+User Profile:
+- Blue "VERIFIED" badge next to their name
+- Shows on /dashboard/account-settings page
+
+═══════════════════════════════════════════════════════════
