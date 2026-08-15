@@ -34,6 +34,8 @@ interface UserData {
   totalWithdraw: number;
   role: string;
   createdAt: string;
+  isVerified?: boolean;
+  verifiedAt?: string | null;
   connectedWallet?: {
     provider: string;
     address: string;
@@ -146,7 +148,7 @@ export default function DashboardPage() {
   const balance = user?.balance ?? 0;
   const totalProfit = user?.totalProfit ?? 0;
   const totalWithdraw = user?.totalWithdraw ?? 0;
-  const isVerified = false;
+  const isVerified = user?.isVerified ?? false;
   const referralLink = typeof window !== "undefined" ? `${window.location.origin}/register?ref=${username}` : `https://teslaxipo.com/register?ref=${username}`;
 
   const fmt = (n: number) =>
